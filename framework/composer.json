@@ -1,0 +1,16 @@
+{
+    "name": "jamesblanksby/x-framework",
+    "config": {
+        "platform": {
+            "php": "7.1"
+        }
+    },
+    "autoload": {
+        "psr-4": {
+            "Framework\\": "./src/"
+        },
+        "files": [
+            "./src/helper.php"
+        ]
+    }
+}

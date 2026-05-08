@@ -1,0 +1,10 @@
+# directory
+vendor/
+lib/*/*
+
+# file
+.php_cs.cache
+app/config/env.php
+
+# void
+!.gitkeep

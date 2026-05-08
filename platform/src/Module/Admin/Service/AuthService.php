@@ -1,0 +1,40 @@
+<?php
+
+namespace Platform\Module\Admin\Service;
+
+use Platform\Domain\Service\UserService;
+use Platform\Security\Authenticator;
+
+class AuthService
+{
+    /** @var Authenticator */
+    private $authenticator;
+    /** @var UserService */
+    private $userService;
+
+    public function __construct(
+        Authenticator $authenticator,
+        UserService $userService
+    ) {
+        $this->authenticator = $authenticator;
+        $this->userService = $userService;
+    }
+
+    public function authenticate(string $email, string $password): bool
+    {
+        $user = $this->userService->find($email, 'email');
+
+        if (!$user || !password_verify($password, $user['password'])) {
+            return false;
+        }
+
+        $this->authenticator->authenticate($user['id']);
+
+        return true;
+    }
+
+    public function invalidate(): void
+    {
+        $this->authenticator->invalidate();
+    }
+}

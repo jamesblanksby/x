@@ -1,0 +1,13 @@
+{
+    "name": "jamesblanksby/x-platform",
+    "config": {
+        "platform": {
+            "php": "7.1"
+        }
+    },
+    "autoload": {
+        "psr-4": {
+            "Platform\\": "./src/"
+        }
+    }
+}
