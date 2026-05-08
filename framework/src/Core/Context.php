@@ -2,7 +2,9 @@
 
 namespace Framework\Core;
 
-class Context
+use Framework\Support\ImmutableObject;
+
+class Context extends ImmutableObject
 {
     /** @var string */
     public $root;

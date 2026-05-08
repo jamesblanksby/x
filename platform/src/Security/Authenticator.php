@@ -2,27 +2,31 @@
 
 namespace Platform\Security;
 
+use Framework\Http\Session\Session;
 use Framework\Security\AuthenticatedUser;
 use Framework\Security\AuthenticatorInterface;
 use Platform\Domain\Service\UserService;
 
 class Authenticator implements AuthenticatorInterface
 {
+    /** @var Session */
+    private $session;
     /** @var UserService */
     private $userService;
 
     private const AUTH_KEY = 'user_id';
 
-    public function __construct(UserService $userService)
-    {
+    public function __construct(
+        Session $session,
+        UserService $userService
+    ) {
+        $this->session = $session;
         $this->userService = $userService;
-
-        $this->session();
     }
 
     public function check(): ?AuthenticatedUser
     {
-        $id = $_SESSION[self::AUTH_KEY] ?? null;
+        $id = $this->session->get(self::AUTH_KEY);
 
         if (!$id) {
             return null;
@@ -33,14 +37,13 @@ class Authenticator implements AuthenticatorInterface
 
     public function authenticate(int $id): void
     {
-        session_regenerate_id(true);
-        $_SESSION[self::AUTH_KEY] = $id;
+        $this->session->regenerate();
+        $this->session->set(self::AUTH_KEY, $id);
     }
 
     public function invalidate(): void
     {
-        $_SESSION = [];
-        session_destroy();
+        $this->session->destroy();
     }
 
     private function user(int $id): ?AuthenticatedUser
@@ -53,14 +56,8 @@ class Authenticator implements AuthenticatorInterface
 
         return new AuthenticatedUser(
             $user['id'],
+            $user['uid'],
             $user['email']
         );
-    }
-
-    private function session(): void
-    {
-        if (session_status() === PHP_SESSION_NONE) {
-            session_start();
-        }
     }
 }

@@ -2,22 +2,26 @@
 
 namespace Framework\Database;
 
-class Config
+use Framework\Support\ImmutableObject;
+
+class Config extends ImmutableObject
 {
     /** @var string */
     public $driver;
-    /** @var string */
-    public $host;
-    /** @var int */
-    public $port;
-    /** @var string */
-    public $database;
     /** @var ?string */
     public $username;
     /** @var ?string */
     public $password;
+
     /** @var string */
-    public $charset;
+    private $host;
+    /** @var int */
+    private $port;
+    /** @var string */
+    private $database;
+
+    /** @var string */
+    private $charset;
 
     public function __construct(array $config = [])
     {

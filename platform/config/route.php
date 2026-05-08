@@ -6,7 +6,9 @@
 
 /* -------------------------------------------------------------------- ROUTE --- */
 return [
-    include __DIR__ . '/route/admin.php',
-    include __DIR__ . '/route/common.php',
-    include __DIR__ . '/route/site.php',
+    'groups' => [
+        include __DIR__ . '/route/admin.php',
+        include __DIR__ . '/route/common.php',
+        include __DIR__ . '/route/site.php',
+    ],
 ];

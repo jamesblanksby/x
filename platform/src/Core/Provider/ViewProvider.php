@@ -11,18 +11,21 @@ class ViewProvider implements ProviderInterface
 {
     public function register(Container $container, Context $context): void
     {
-        $paths = [
-            dirname(__DIR__, 3) . '/template/',
-            $container->get('config.view')['path'],
-        ];
+        $config = array_merge_recursive(
+            require dirname(__DIR__, 3) . '/config/view.php',
+            $container->get('config.view')
+        );
 
-        $view = new View();
+        $view = $container->get(View::class);
 
-        foreach ($paths as $path) {
-            $view->add($path);
+        foreach ($config['paths'] as $path) {
+            $view->addPath($path);
         }
 
-        $container->set(View::class, $view);
+        foreach ($config['extensions'] as $extensionClass) {
+            $extension = $container->get($extensionClass);
+            $view->registerExtension($extension);
+        }
     }
 
     public function boot(Container $container, Context $context): void
@@ -32,6 +35,6 @@ class ViewProvider implements ProviderInterface
 
     public function priority(): int
     {
-        return 20;
+        return 40;
     }
 }

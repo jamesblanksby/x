@@ -32,6 +32,6 @@ class DatabaseProvider implements ProviderInterface
 
     public function priority(): int
     {
-        return 40;
+        return 30;
     }
 }

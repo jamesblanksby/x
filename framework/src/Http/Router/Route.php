@@ -2,7 +2,9 @@
 
 namespace Framework\Http\Router;
 
-class Route
+use Framework\Support\ImmutableObject;
+
+class Route extends ImmutableObject
 {
     /** @var string */
     public $method;

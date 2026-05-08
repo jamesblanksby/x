@@ -16,21 +16,21 @@ class RouteProvider implements ProviderInterface
 
     public function boot(Container $container, Context $context): void
     {
-        $groups = array_merge(
+        $config = array_merge_recursive(
             require dirname(__DIR__, 3) . '/config/route.php',
             $container->get('config.route')
         );
 
         $router = $container->get(Router::class);
 
-        foreach ($groups as $group) {
+        foreach ($config['groups'] as $group) {
             $this->registerGroup($router, $group);
         }
     }
 
     public function priority(): int
     {
-        return 30;
+        return 20;
     }
 
     private function registerGroup(Router $router, array $group): void

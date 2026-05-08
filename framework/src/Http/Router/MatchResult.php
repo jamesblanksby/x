@@ -2,7 +2,9 @@
 
 namespace Framework\Http\Router;
 
-class MatchResult
+use Framework\Support\ImmutableObject;
+
+class MatchResult extends ImmutableObject
 {
     /** @var ?Route */
     public $route = null;

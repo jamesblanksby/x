@@ -5,8 +5,10 @@ namespace Framework\Http\Request;
 use Framework\Http\Bag\FileBag;
 use Framework\Http\Bag\HeaderBag;
 use Framework\Http\Bag\ParamBag;
+use Framework\Http\Session\Session;
+use Framework\Support\ImmutableObject;
 
-class Request
+class Request extends ImmutableObject
 {
     /** @var ParamBag */
     public $server;
@@ -20,6 +22,8 @@ class Request
     public $files;
     /** @var ParamBag */
     public $cookies;
+    /** @var Session */
+    public $session;
     /** @var string */
     public $method;
     /** @var string */
@@ -48,6 +52,11 @@ class Request
         $this->method = strtoupper($this->server->get('REQUEST_METHOD', 'GET'));
         $this->uri = $this->server->get('REQUEST_URI', '/');
         $this->path = parse_url($this->uri, PHP_URL_PATH) ?? '/';
+    }
+
+    public function setSession(Session $session): void
+    {
+        $this->session = $session;
     }
 
     public function secure(): bool

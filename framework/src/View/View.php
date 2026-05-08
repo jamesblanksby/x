@@ -2,6 +2,8 @@
 
 namespace Framework\View;
 
+use Framework\View\Extension\ExtensionInterface;
+
 class View
 {
     /** @var ?string */
@@ -9,13 +11,17 @@ class View
     /** @var array */
     private $paths = [];
     /** @var array */
+    public $functions = [];
+    /** @var array */
+    public $globals = [];
+    /** @var array */
     private $stack = [];
     /** @var array */
     private $blocks = [];
 
-    public function add(string $path): void
+    public function __construct()
     {
-        $this->paths[] = $path;
+        // @TODO addGlobal('app', ...)
     }
 
     public function render(string $template, array $data = []): string
@@ -68,12 +74,44 @@ class View
         echo $clone->render($template, $data);
     }
 
+    /** @return mixed */
+    public function __call(string $name, array $args)
+    {
+        if (!isset($this->functions[$name])) {
+            throw new \BadMethodCallException("Method `{$name}` does not exist.");
+        }
+
+        return ($this->functions[$name])(...$args);
+    }
+
+    public function addPath(string $path): void
+    {
+        $this->paths[] = $path;
+    }
+
+    /** @param mixed $value */
+    public function addGlobal(string $key, $value): void
+    {
+        $this->globals[$key] = $value;
+    }
+
+    public function addFunction(string $name, callable $callable): void
+    {
+        $this->functions[$name] = $callable;
+    }
+
+    public function registerExtension(ExtensionInterface $extension): void
+    {
+        $extension->register($this);
+    }
+
     private function renderTemplate(string $template, array $data): string
     {
         $path = $this->resolvePath($template);
 
         $v = $this;
 
+        $data = array_merge($this->globals, $data);
         extract($data);
 
         $this->startBuffer();
