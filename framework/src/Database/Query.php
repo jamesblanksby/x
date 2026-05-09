@@ -2,14 +2,17 @@
 
 namespace Framework\Database;
 
-class Query
+use Framework\Support\ValueObject;
+
+class Query extends ValueObject
 {
+    /** @var string */
+    public $type = 'select';
+    /** @var string */
+    public $table = '';
+
     /** @var Database */
     private $database;
-    /** @var string */
-    private $type = 'select';
-    /** @var string */
-    private $table = '';
     /** @var array */
     private $selects = ['*'];
     /** @var array */
@@ -38,16 +41,6 @@ class Query
     public function __construct(Database $database)
     {
         $this->database = $database;
-    }
-
-    public function type(): string
-    {
-        return $this->type;
-    }
-
-    public function table(): string
-    {
-        return $this->table;
     }
 
     /** @param array|string $columns */

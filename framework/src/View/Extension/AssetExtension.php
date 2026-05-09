@@ -32,15 +32,9 @@ class AssetExtension implements ExtensionInterface
 
     public function asset(string $path): string
     {
-        $path = ltrim($path, '/');
-
         $asset = trim($this->view->options->get('asset', ''), '/');
 
-        if (strpos($asset, 'http') === 0) {
-            return $asset . '/' . $path;
-        }
-
-        $path = $asset . '/' . $path;
+        $path = $asset . '/' . ltrim($path, '/');
         $url = $this->request->getUrlForPath($path);
 
         $path = $this->context->path($path);
