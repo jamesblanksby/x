@@ -1,5 +1,5 @@
-<?php $v->extend('site/layout'); ?>
+<?php $v->extend('site/layout') ?>
 
-<?php $v->block('main'); ?>
+<?php $v->block('main') ?>
 <?= d($page); ?>
 <?php $v->endblock(); ?>

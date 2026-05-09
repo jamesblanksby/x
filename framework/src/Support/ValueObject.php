@@ -2,7 +2,7 @@
 
 namespace Framework\Support;
 
-abstract class ImmutableObject
+abstract class ValueObject
 {
     /** @return mixed */
     public function __get(string $name)

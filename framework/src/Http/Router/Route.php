@@ -2,9 +2,9 @@
 
 namespace Framework\Http\Router;
 
-use Framework\Support\ImmutableObject;
+use Framework\Support\ValueObject;
 
-class Route extends ImmutableObject
+class Route extends ValueObject
 {
     /** @var string */
     public $method;

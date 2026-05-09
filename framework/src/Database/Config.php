@@ -2,9 +2,9 @@
 
 namespace Framework\Database;
 
-use Framework\Support\ImmutableObject;
+use Framework\Support\ValueObject;
 
-class Config extends ImmutableObject
+class Config extends ValueObject
 {
     /** @var string */
     public $driver;

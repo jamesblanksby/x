@@ -1,26 +1,26 @@
-<?php $v->extend('base'); ?>
+<?php $v->extend('base') ?>
 
-<?php $v->block('head'); ?>
+<?php $v->block('head') ?>
 <!-- title -->
 <title></title>
 <!-- style : admin -->
-<link rel="stylesheet" href>
+<link rel="stylesheet" href="<?= $v->asset('admin/css/admin.css') ?>">
 <!-- script : jquery -->
-<script defer src></script>
+<script defer src="<?= $v->asset('admin/js/jquery.js') ?>"></script>
 <!-- script : jqueryui -->
-<script defer src></script>
+<script defer src="<?= $v->asset('admin/js/jqueryui.js') ?>"></script>
 <!-- script : scriptkit -->
-<script defer src></script>
+<script defer src="<?= $v->asset('admin/js/scriptkit.js') ?>"></script>
 <!-- script : admin -->
-<script defer src></script>
-<?php $v->endblock(); ?>
+<script defer src="<?= $v->asset('admin/js/admin.js') ?>"></script>
+<?php $v->endblock() ?>
 
-<?php $v->block('before'); ?>
+<?php $v->block('before') ?>
 <!-- header -->
-<?php $v->include('admin/template/layout/header'); ?>
-<?php $v->endblock(); ?>
+<?php $v->include('admin/template/layout/header') ?>
+<?php $v->endblock() ?>
 
-<?php $v->block('after'); ?>
+<?php $v->block('after') ?>
 <!-- footer -->
-<?php $v->include('admin/template/layout/footer'); ?>
-<?php $v->endblock(); ?>
+<?php $v->include('admin/template/layout/footer') ?>
+<?php $v->endblock() ?>

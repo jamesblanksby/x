@@ -2,9 +2,9 @@
 
 namespace Framework\Core;
 
-use Framework\Support\ImmutableObject;
+use Framework\Support\ValueObject;
 
-class Context extends ImmutableObject
+class Context extends ValueObject
 {
     /** @var string */
     public $root;
@@ -22,6 +22,6 @@ class Context extends ImmutableObject
 
     public function path(string $path): string
     {
-        return $this->root . DIRECTORY_SEPARATOR . ltrim($path, '/');
+        return $this->root . '/' . ltrim($path, '/');
     }
 }

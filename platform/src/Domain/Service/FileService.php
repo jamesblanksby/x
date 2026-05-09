@@ -26,17 +26,17 @@ class FileService extends EntityService
 
     public function hydrate(array $file): array
     {
-        $file['path'] = $this->path($file);
+        $file['path'] = $this->file($file);
         $file['url'] = $this->url($file);
 
         return parent::hydrate($file);
     }
 
-    private function path(array $file): string
+    private function file(array $file): string
     {
-        $name = $file['id'] . '.' . $file['extension'];
+        $path = 'lib/file/' . $file['id'] . '.' . $file['extension'];
 
-        return $this->context->path("lib/file/{$name}");
+        return $this->context->path($path);
     }
 
     private function url(array $file): string

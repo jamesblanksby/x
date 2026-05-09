@@ -6,9 +6,9 @@ use Framework\Http\Bag\FileBag;
 use Framework\Http\Bag\HeaderBag;
 use Framework\Http\Bag\ParamBag;
 use Framework\Http\Session\Session;
-use Framework\Support\ImmutableObject;
+use Framework\Support\ValueObject;
 
-class Request extends ImmutableObject
+class Request extends ValueObject
 {
     /** @var ParamBag */
     public $server;

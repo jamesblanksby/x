@@ -1,6 +1,6 @@
-<?php $v->extend('admin/layout'); ?>
+<?php $v->extend('admin/layout') ?>
 
-<?php $v->block('main'); ?>
+<?php $v->block('main') ?>
 <!-- @TODO -->
 <h1>Login</h1>
 <form action="/x/admin/authenticate" method="post">

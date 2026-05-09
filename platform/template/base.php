@@ -6,20 +6,20 @@
     <!-- viewport -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
     <?php /* head */ ?>
-    <?php $v->section('head'); ?>
+    <?php $v->section('head') ?>
 </head>
 <body>
 
     <?php /* before */ ?>
-    <?php $v->section('before'); ?>
+    <?php $v->section('before') ?>
 
     <!-- main -->
     <main class="main">
-        <?php $v->section('main'); ?>
+        <?php $v->section('main') ?>
     </main>
 
     <?php /* after */ ?>
-    <?php $v->section('after'); ?>
+    <?php $v->section('after') ?>
 
 </body>
 </html>

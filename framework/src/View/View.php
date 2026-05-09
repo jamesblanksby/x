@@ -2,12 +2,15 @@
 
 namespace Framework\View;
 
+use Framework\Support\Collection;
+use Framework\Support\ValueObject;
 use Framework\View\Extension\ExtensionInterface;
 
-class View
+class View extends ValueObject
 {
-    /** @var array */
-    private $options = [];
+    /** @var Collection */
+    public $options;
+
     /** @var array */
     private $paths = [];
     /** @var array */
@@ -23,7 +26,7 @@ class View
 
     public function __construct(array $options = [])
     {
-        $this->options = $options;
+        $this->options = new Collection($options);
     }
 
     public function render(string $template, array $data = []): string
@@ -86,15 +89,6 @@ class View
         return ($this->functions[$name])(...$args);
     }
 
-    /**
-     * @param mixed $default
-     * @return mixed
-     */
-    public function getOption(string $key, $default = null)
-    {
-        return $this->options[$key] ?? $default;
-    }
-
     public function addPath(string $path): void
     {
         $this->paths[] = $path;
@@ -126,7 +120,13 @@ class View
         extract($data);
 
         $this->startBuffer();
-        require $path;
+
+        try {
+            require $path;
+        } catch (\Throwable $e) {
+            $this->discardBuffer();
+            throw $e;
+        }
 
         return $this->captureBuffer();
     }
@@ -138,7 +138,7 @@ class View
         }
 
         foreach ($this->paths as $path) {
-            $path = rtrim($path, '/') . DIRECTORY_SEPARATOR . ltrim($template, '/');
+            $path = rtrim($path, '/') . '/' . ltrim($template, '/');
 
             if (file_exists($path)) {
                 return $path;
@@ -156,5 +156,12 @@ class View
     private function captureBuffer(): string
     {
         return ob_get_clean() ?: '';
+    }
+
+    private function discardBuffer(): void
+    {
+        if (ob_get_level() > 0) {
+            ob_end_clean();
+        }
     }
 }
