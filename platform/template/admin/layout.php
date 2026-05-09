@@ -1,10 +1,16 @@
 <?php $v->extend('base') ?>
 
-<?php $v->block('head') ?>
+<?php $v->block('head:meta') ?>
 <!-- title -->
 <title></title>
+<?php $v->endblock() ?>
+
+<?php $v->block('head:style') ?>
 <!-- style : admin -->
 <link rel="stylesheet" href="<?= $v->asset('admin/css/admin.css') ?>">
+<?php $v->endblock() ?>
+
+<?php $v->block('head:script') ?>
 <!-- script : jquery -->
 <script defer src="<?= $v->asset('admin/js/jquery.js') ?>"></script>
 <!-- script : jqueryui -->

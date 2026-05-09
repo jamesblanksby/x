@@ -5,8 +5,14 @@
     <meta charset="utf-8">
     <!-- viewport -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-    <?php /* head */ ?>
-    <?php $v->section('head') ?>
+    <?php /* meta */ ?>
+    <?php $v->section('head:meta') ?>
+    <?php /* share */ ?>
+    <?php $v->section('head:share') ?>
+    <?php /* style */ ?>
+    <?php $v->section('head:style') ?>
+    <?php /* script */ ?>
+    <?php $v->section('head:script') ?>
 </head>
 <body>
 

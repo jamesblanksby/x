@@ -45,9 +45,9 @@ class PageService extends EntityService
         return parent::hydrate($page);
     }
 
-    private function url(?array $page): string
+    private function url(array $page): string
     {
-        if (!$page || $page['slug'] === 'index') {
+        if ($page['slug'] === 'index') {
             return $this->request->getUrl();
         }
 
