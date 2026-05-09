@@ -27,12 +27,12 @@ class AssetExtension implements ExtensionInterface
     public function asset(string $path): string
     {
         $base = '';
-        $root = trim($this->view->getOption('asset', ''), '/');
+        $asset = trim($this->view->getOption('asset', ''), '/');
 
-        if (strpos($root, 'http') !== 0) {
+        if (strpos($asset, 'http') !== 0) {
             $base = rtrim($this->request->getBaseUrl(), '/');
         }
 
-        return $base . '/' . $root . '/' . ltrim($path, '/');
+        return $base . '/' . $asset . '/' . ltrim($path, '/');
     }
 }
