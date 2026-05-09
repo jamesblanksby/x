@@ -24,14 +24,14 @@ class Config extends ImmutableObject
 
     public function __construct(array $config = [])
     {
-        $config = array_merge(Config::defaults(), $config);
+        $config = array_merge(self::defaults(), $config);
 
         $this->driver = $config['driver'];
+        $this->username = $config['username'];
+        $this->password = $config['password'];
         $this->host = $config['host'];
         $this->port = $config['port'];
         $this->database = $config['database'];
-        $this->username = $config['username'];
-        $this->password = $config['password'];
         $this->charset = $config['charset'];
     }
 
@@ -46,15 +46,15 @@ class Config extends ImmutableObject
         );
     }
 
-    public static function defaults(): array
+    private static function defaults(): array
     {
         return [
             'driver' => 'mysql',
+            'username' => null,
+            'password' => null,
             'host' => '127.0.0.1',
             'port' => 3306,
             'database' => '',
-            'username' => null,
-            'password' => null,
             'charset' => 'utf8mb4',
         ];
     }
