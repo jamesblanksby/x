@@ -59,12 +59,12 @@ class Request extends ImmutableObject
         $this->session = $session;
     }
 
-    public function secure(): bool
+    public function isSecure(): bool
     {
         return $this->getScheme() === 'https';
     }
 
-    public function xmlHttpRequest(): bool
+    public function isXmlHttpRequest(): bool
     {
         $header = $this->server->get('HTTP_X_REQUESTED_WITH');
 
