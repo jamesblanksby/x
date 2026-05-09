@@ -12,7 +12,7 @@ class Container
     public function __construct()
     {
         $this->registry = new ContainerRegistry();
-        $this->resolver = new DependencyResolver($this->registry, new DependencyReflector());
+        $this->resolver = new DependencyResolver(new DependencyBuilder(), $this->registry);
     }
 
     public function has(string $id): bool

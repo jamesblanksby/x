@@ -4,17 +4,17 @@ namespace Framework\Container;
 
 class DependencyResolver
 {
+    /** @var DependencyBuilder */
+    private $builder;
     /** @var ContainerRegistry */
     private $registry;
-    /** @var DependencyReflector */
-    private $reflector;
 
     public function __construct(
-        ContainerRegistry $registry,
-        DependencyReflector $reflector
+        DependencyBuilder $builder,
+        ContainerRegistry $registry
     ) {
+        $this->builder = $builder;
         $this->registry = $registry;
-        $this->reflector = $reflector;
     }
 
     /** @return mixed */
@@ -25,7 +25,7 @@ class DependencyResolver
         }
 
         if (class_exists($id)) {
-            return $this->reflector->build($id, $params, $make);
+            return $this->builder->build($id, $params, $make);
         }
 
         throw new \RuntimeException("Unable to resolve `{$id}`.");
@@ -41,7 +41,7 @@ class DependencyResolver
         }
 
         if (is_string($definition) && class_exists($definition)) {
-            return $this->reflector->build($definition, $params, $make);
+            return $this->builder->build($definition, $params, $make);
         }
 
         return $definition;

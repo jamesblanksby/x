@@ -2,7 +2,7 @@
 
 namespace Framework\Container;
 
-class DependencyReflector
+class DependencyBuilder
 {
     /**
      * @template T of object
@@ -11,33 +11,15 @@ class DependencyReflector
      */
     public function build(string $className, array $params, callable $resolver)
     {
-        $class = $this->reflect($className);
-        $this->assertInstantiable($class);
+        $class = new \ReflectionClass($className);
+
+        if (!$class->isInstantiable()) {
+            throw new \RuntimeException("Class `{$class->getName()}` is not instantiable.");
+        }
 
         $args = $this->resolveConstructorArgs($class, $params, $resolver);
 
         return $class->newInstanceArgs($args);
-    }
-
-    /**
-     * @template T of object
-     * @param class-string<T> $className
-     * @return \ReflectionClass<T>
-     */
-    public function reflect(string $className): \ReflectionClass
-    {
-        return new \ReflectionClass($className);
-    }
-
-    /**
-     * @template T of object
-     * @param \ReflectionClass<T> $class
-     */
-    public function assertInstantiable(\ReflectionClass $class): void
-    {
-        if (!$class->isInstantiable()) {
-            throw new \RuntimeException("Class `{$class->getName()}` is not instantiable.");
-        }
     }
 
     /**
