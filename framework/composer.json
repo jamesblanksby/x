@@ -12,5 +12,8 @@
         "files": [
             "./src/helper.php"
         ]
+    },
+    "require": {
+        "ramsey/uuid": "^3.9"
     }
 }

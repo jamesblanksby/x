@@ -8,6 +8,9 @@ return [
             __DIR__ . '/app/src/',
             __DIR__ . '/framework/src/',
         ],
+        'bootstrapFiles' => [
+            __DIR__ . '/app/vendor/autoload.php',
+        ],
         'ignoreErrors' => [
             '#no value type specified in iterable type (array|iterable)#',
         ],

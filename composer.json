@@ -14,22 +14,22 @@
     "repositories": [
         {
             "type": "path",
-            "url": "./platform",
+            "url": "./platform/",
             "options": {
                 "symlink": true
             }
         },
         {
             "type": "path",
-            "url": "./framework",
+            "url": "./framework/",
             "options": {
                 "symlink": true
             }
         }
     ],
     "require": {
-        "jamesblanksby/x-platform": "@dev",
-        "jamesblanksby/x-framework": "@dev"
+        "jamesblanksby/x-framework": "@dev",
+        "jamesblanksby/x-platform": "@dev"
     },
     "require-dev": {
         "friendsofphp/php-cs-fixer": "^2.19",

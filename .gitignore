@@ -1,7 +1,7 @@
 # directory
+app/vendor/
 lib/*/*
 src/**/css/*
-vendor/
 
 # file
 .php_cs.cache

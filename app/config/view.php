@@ -9,5 +9,4 @@ return [
     'paths' => [
         dirname(__DIR__, 1) . '/template/'
     ],
-    'extensions' => [], // @TODO
 ];
