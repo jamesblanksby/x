@@ -25,6 +25,12 @@ class Session
         return array_key_exists($key, $_SESSION);
     }
 
+    /** @param mixed $value */
+    public function set(string $key, $value): void
+    {
+        $_SESSION[$key] = $value;
+    }
+
     /**
      * @param mixed $default
      * @return mixed
@@ -32,12 +38,6 @@ class Session
     public function get(string $key, $default = null)
     {
         return $_SESSION[$key] ?? $default;
-    }
-
-    /** @param mixed $value */
-    public function set(string $key, $value): void
-    {
-        $_SESSION[$key] = $value;
     }
 
     public function remove(string $key): void

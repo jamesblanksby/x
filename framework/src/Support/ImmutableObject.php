@@ -12,7 +12,7 @@ abstract class ImmutableObject
         }
 
         throw new \InvalidArgumentException(
-            sprintf('Property "%s" does not exist on %s.', $name, static::class)
+            sprintf('Property `%s` does not exist on %s.', $name, static::class)
         );
     }
 
@@ -22,10 +22,5 @@ abstract class ImmutableObject
         throw new \LogicException(
             sprintf('Cannot modify readonly property %s::$%s.', static::class, $name)
         );
-    }
-
-    public function __isset(string $name): bool
-    {
-        return isset($this->$name);
     }
 }
