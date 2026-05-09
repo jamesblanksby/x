@@ -4,6 +4,7 @@ namespace Platform\Domain\Repository;
 
 use Framework\Database\Database;
 use Framework\Repository\Repository;
+use Framework\Utility\Uuid;
 
 class EntityRepository extends Repository
 {
@@ -36,7 +37,7 @@ class EntityRepository extends Repository
     protected function normalize(array $data, ?int $id = null): array
     {
         if (!$id) {
-            // @TODO uid
+            $data['uid'] = Uuid::create();
         }
 
         return parent::normalize($data, $id);

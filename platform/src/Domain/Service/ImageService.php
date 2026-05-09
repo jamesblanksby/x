@@ -23,7 +23,7 @@ class ImageService extends EntityService
         $image['aspect'] = $this->aspect($image);
         $image['file'] = $this->fileService->find($image['file']);
         $image['orientation'] = $this->orientation($image);
-        // @TODO variant
+        // @TODO variants
 
         return parent::hydrate($image);
     }
