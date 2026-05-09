@@ -19,7 +19,6 @@ class Config extends ImmutableObject
     private $port;
     /** @var string */
     private $database;
-
     /** @var string */
     private $charset;
 
