@@ -6,22 +6,24 @@ use Framework\View\Extension\ExtensionInterface;
 
 class View
 {
-    /** @var ?string */
-    private $layout = null;
+    /** @var array */
+    private $options = [];
     /** @var array */
     private $paths = [];
     /** @var array */
-    public $functions = [];
+    private $functions = [];
     /** @var array */
-    public $globals = [];
+    private $globals = [];
+    /** @var ?string */
+    private $layout = null;
     /** @var array */
     private $stack = [];
     /** @var array */
     private $blocks = [];
 
-    public function __construct()
+    public function __construct(array $options = [])
     {
-        // @TODO addGlobal('app', ...)
+        $this->options = $options;
     }
 
     public function render(string $template, array $data = []): string
@@ -84,6 +86,15 @@ class View
         return ($this->functions[$name])(...$args);
     }
 
+    /**
+     * @param mixed $default
+     * @return mixed
+     */
+    public function getOption(string $key, $default = null)
+    {
+        return $this->options[$key] ?? $default;
+    }
+
     public function addPath(string $path): void
     {
         $this->paths[] = $path;
@@ -127,7 +138,7 @@ class View
         }
 
         foreach ($this->paths as $path) {
-            $path = rtrim($path, '/') . '/' . ltrim($template, '/');
+            $path = rtrim($path, '/') . DIRECTORY_SEPARATOR . ltrim($template, '/');
 
             if (file_exists($path)) {
                 return $path;

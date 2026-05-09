@@ -4,9 +4,11 @@ namespace Framework\Security;
 
 interface AuthenticatorInterface
 {
-    public function check(): ?AuthenticatedUser;
+    public function authenticated(): bool;
 
-    public function authenticate(int $id): void;
+    public function user(): ?AuthenticatedUser;
 
-    public function invalidate(): void;
+    public function login(int $id): void;
+
+    public function logout(): void;
 }

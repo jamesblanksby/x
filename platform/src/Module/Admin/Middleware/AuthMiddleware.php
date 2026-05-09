@@ -18,6 +18,12 @@ class AuthMiddleware implements MiddlewareInterface
     /** @var UrlGenerator */
     private $urlGenerator;
 
+    private const PUBLIC_ROUTES = [
+        'admin.auth.login',
+        'admin.auth.authenticate',
+        'admin.auth.logout',
+    ];
+
     public function __construct(
         Authenticator $authenticator,
         UrlGenerator $urlGenerator
@@ -28,9 +34,9 @@ class AuthMiddleware implements MiddlewareInterface
 
     public function handle(Request $request, callable $next): Response
     {
-        $user = $this->authenticator->check();
+        $user = $this->authenticator->user();
 
-        if (!$this->ignore($request) && !$user) {
+        if ($this->requiresAuthentication($request) && !$user) {
             $url = $this->urlGenerator->generate('admin.auth.login', [], true);
 
             return new RedirectResponse($url);
@@ -43,7 +49,7 @@ class AuthMiddleware implements MiddlewareInterface
         return $next($request);
     }
 
-    private function ignore(Request $request): bool
+    private function requiresAuthentication(Request $request): bool
     {
         $route = $request->getAttribute(Route::class);
 
@@ -51,10 +57,6 @@ class AuthMiddleware implements MiddlewareInterface
             return false;
         }
 
-        return in_array($route->name, [
-            'admin.auth.login',
-            'admin.auth.authenticate',
-            'admin.auth.logout',
-        ]);
+        return in_array($route->name, self::PUBLIC_ROUTES);
     }
 }

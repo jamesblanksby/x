@@ -16,7 +16,9 @@ class ViewProvider implements ProviderInterface
             $container->get('config.view')
         );
 
-        $view = $container->get(View::class);
+        $view = $container->make(View::class, [
+            'options' => $config['options'],
+        ]);
 
         foreach ($config['paths'] as $path) {
             $view->addPath($path);
@@ -26,6 +28,8 @@ class ViewProvider implements ProviderInterface
             $extension = $container->get($extensionClass);
             $view->registerExtension($extension);
         }
+
+        $container->set(View::class, $view);
     }
 
     public function boot(Container $container, Context $context): void

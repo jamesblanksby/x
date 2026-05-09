@@ -55,15 +55,15 @@ abstract class Kernel
 
     public function run(?Request $request = null): void
     {
-        if (!$this->booted) {
-            $this->boot();
-        }
-
         if ($request === null) {
             $request = RequestFactory::createFromGlobals();
         }
 
         $this->container->set(Request::class, $request);
+
+        if (!$this->booted) {
+            $this->boot();
+        }
 
         try {
             $response = $this->dispatchHttp($request);

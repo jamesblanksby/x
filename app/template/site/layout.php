@@ -12,9 +12,9 @@
 <meta property="og:description" content>
 <meta property="og:image" content>
 <!-- style : site -->
-<link rel="stylesheet" href>
+<link rel="stylesheet" href="<?= $v->asset('site/css/site.css'); ?>">
 <!-- script : site -->
-<script defer src></script>
+<script defer src="<?= $v->asset('site/js/site.css'); ?>"></script>
 <?php $v->endblock(); ?>
 
 <?php $v->block('before'); ?>

@@ -73,8 +73,6 @@ class UrlGenerator
 
     private function buildUrl(string $path): string
     {
-        $request = $this->container->get(Request::class);
-
-        return rtrim($request->getBaseUrl(), '/') . '/' . ltrim($path, '/');
+        return $this->container->get(Request::class)->getUrlForPath($path);
     }
 }

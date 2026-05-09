@@ -1,9 +1,8 @@
 <?php
 
-namespace Platform\View\Extension;
+namespace Framework\View\Extension;
 
 use Framework\Http\Router\UrlGenerator;
-use Framework\View\Extension\ExtensionInterface;
 use Framework\View\View;
 
 class UrlExtension implements ExtensionInterface

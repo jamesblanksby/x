@@ -22,6 +22,6 @@ class Context extends ImmutableObject
 
     public function path(string $path): string
     {
-        return $this->root . '/' . ltrim($path, '/');
+        return $this->root . DIRECTORY_SEPARATOR . ltrim($path, '/');
     }
 }

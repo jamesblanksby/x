@@ -125,6 +125,11 @@ class Request extends ImmutableObject
         return $uri;
     }
 
+    public function getUrlForPath(string $path): string
+    {
+        return $this->getBaseUrl() . '/' . ltrim($path, '/');
+    }
+
     /**
      * @param mixed $default
      * @return mixed

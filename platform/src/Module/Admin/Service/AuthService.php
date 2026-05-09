@@ -28,7 +28,7 @@ class AuthService
             return false;
         }
 
-        $this->authenticator->authenticate($user['id']);
+        $this->authenticator->login($user['id']);
 
         return true;
     }
