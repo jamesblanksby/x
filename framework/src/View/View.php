@@ -22,7 +22,7 @@ class View extends ValueObject
     /** @var array */
     private $stack = [];
     /** @var array */
-    private $blocks = [];
+    private $sections = [];
 
     public function __construct(array $options = [])
     {
@@ -37,10 +37,6 @@ class View extends ValueObject
             $layout = $this->layout;
             $this->layout = null;
 
-            $data = array_merge($data, [
-                'content' => $output,
-            ]);
-
             $output = $this->renderTemplate($layout, $data);
         }
 
@@ -54,21 +50,22 @@ class View extends ValueObject
         return $this;
     }
 
-    public function block(string $name): void
+    public function section(string $name): void
     {
         $this->stack[] = $name;
         $this->startBuffer();
     }
 
-    public function endblock(): void
+    public function endsection(): void
     {
         $name = array_pop($this->stack);
-        $this->blocks[$name] = $this->captureBuffer();
+    $content = $this->captureBuffer();
+
+    if (!isset($this->sections[$name])) {
+        $this->sections[$name] = $content;
     }
 
-    public function section(string $name, string $default = ''): void
-    {
-        echo $this->blocks[$name] ?? $default;
+    echo $this->sections[$name];
     }
 
     public function include(string $template, array $data = []): void
