@@ -32,9 +32,7 @@
 
     <?php /* after */ ?>
     <?php $v->section('after'); ?>
-    123
     <?php $v->endsection(); ?>
 
 </body>
-
 </html>

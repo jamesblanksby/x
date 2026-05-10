@@ -1,20 +1,4 @@
-<?php $v->extend('base'); ?>
-
-<?php $v->section('head:meta'); ?>
-<!-- title -->
-<title></title>
-<!-- description -->
-<meta name="description" content>
-<?php $v->endsection(); ?>
-
-<?php $v->section('head:share'); ?>
-<!-- share -->
-<meta property="og:type" content="url">
-<meta property="og:url" content>
-<meta property="og:title" content>
-<meta property="og:description" content>
-<meta property="og:image" content>
-<?php $v->endsection(); ?>
+<?php $v->extend('site/base'); ?>
 
 <?php $v->section('head:style'); ?>
 <!-- style : site -->
@@ -32,6 +16,7 @@
 <?php $v->endsection(); ?>
 
 <?php $v->section('after'); ?>
+<?php $v->parent(); ?>
 <!-- footer -->
 <?php $v->include('site/template/layout/footer'); ?>
 <?php $v->endsection(); ?>

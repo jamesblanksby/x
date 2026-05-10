@@ -23,6 +23,8 @@ class View extends ValueObject
     private $stack = [];
     /** @var array */
     private $sections = [];
+    /** @var array */
+    private $parents = [];
 
     public function __construct(array $options = [])
     {
@@ -53,19 +55,30 @@ class View extends ValueObject
     public function section(string $name): void
     {
         $this->stack[] = $name;
+        $this->parents[$name] = $this->sections[$name] ?? '';
+
         $this->startBuffer();
     }
 
     public function endsection(): void
     {
         $name = array_pop($this->stack);
-    $content = $this->captureBuffer();
+        $content = $this->captureBuffer();
 
-    if (!isset($this->sections[$name])) {
-        $this->sections[$name] = $content;
+        if (!isset($this->sections[$name])) {
+            $this->sections[$name] = '';
+        }
+
+        $this->sections[$name] .= $content;
+
+        echo $this->sections[$name];
     }
 
-    echo $this->sections[$name];
+    public function parent(): void
+    {
+        $name = end($this->stack);
+
+        echo $this->parents[$name] ?? '';
     }
 
     public function include(string $template, array $data = []): void

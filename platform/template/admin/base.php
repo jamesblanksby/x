@@ -1,6 +1,7 @@
 <?php $v->extend('base'); ?>
 
 <?php $v->section('head:meta'); ?>
+<?php $v->parent(); ?>
 <!-- title -->
 <title></title>
 <?php $v->endsection(); ?>
