@@ -5,8 +5,6 @@ namespace Framework\Http\Router;
 class RouteCompiler
 {
     private const PARAM_REGEX = '/\{(\w+)(?::([^}]+))?\}(\?)?/';
-    private const ANY_PATTERN = '[^/]+';
-
     private const PARAM_PATTERNS = [
         'file' => '[a-z0-9._-]+\.[a-z0-9]+',
         'uuid' => '[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}',
@@ -84,7 +82,7 @@ class RouteCompiler
     private function resolvePattern(?string $pattern): string
     {
         if ($pattern === null || $pattern === '') {
-            return self::ANY_PATTERN;
+            $pattern = 'any';
         }
 
         return self::PARAM_PATTERNS[$pattern] ?? $pattern;
