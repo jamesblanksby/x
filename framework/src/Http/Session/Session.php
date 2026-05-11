@@ -2,10 +2,21 @@
 
 namespace Framework\Http\Session;
 
-class Session
+use Framework\Http\Bag\FlashBag;
+use Framework\Support\ValueObject;
+
+class Session extends ValueObject
 {
+    /** @var FlashBag */
+    public $flash;
+
     /** @var bool */
     private $started = false;
+
+    public function __construct()
+    {
+        $this->flash = new FlashBag($this);
+    }
 
     public function start(): void
     {

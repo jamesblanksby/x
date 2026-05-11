@@ -21,6 +21,8 @@ class Request extends ValueObject
     /** @var FileBag */
     public $files;
     /** @var ParamBag */
+    public $input;
+    /** @var ParamBag */
     public $cookies;
     /** @var Session */
     public $session;
@@ -47,6 +49,11 @@ class Request extends ValueObject
         $this->query = new ParamBag($query);
         $this->body = new ParamBag($body);
         $this->files = new FileBag($files);
+        $this->input = new ParamBag(array_merge(
+            $this->query->all(),
+            $this->body->all(),
+            $this->files->all()
+        ));
         $this->cookies = new ParamBag($cookies);
 
         $this->method = strtoupper($this->server->get('REQUEST_METHOD', 'GET'));

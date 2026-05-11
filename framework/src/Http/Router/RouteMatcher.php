@@ -49,8 +49,9 @@ class RouteMatcher
         $params = [];
 
         foreach ($route->paramNames as $a => $name) {
-            if (isset($matches[$name]) && $matches[$name] !== '') {
-                $params[$name] = $matches[$name];
+            $match = $matches[$name] ?? null;
+            if ($match && $match !== '') {
+                $params[$name] = $match;
             } elseif ($route->paramOptional[$a]) {
                 $params[$name] = null;
             }

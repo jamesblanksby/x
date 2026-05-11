@@ -8,6 +8,7 @@ use Framework\Http\Response\JsonResponse;
 use Framework\Http\Response\RedirectResponse;
 use Framework\Http\Response\Response;
 use Framework\Http\Router\Router;
+use Framework\Http\Session\Session;
 use Framework\View\View;
 
 abstract class Controller
@@ -58,6 +59,8 @@ abstract class Controller
         return $this->container->get(Router::class)->url($name, $params, $absolute);
     }
 
-    // /** @param mixed $message */
-    // @TODO protected function addFlash(string $type, $message): void
+    protected function addFlash(string $type, string $message): void
+    {
+        $this->container->get(Session::class)->flash->add($type, $message);
+    }
 }

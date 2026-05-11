@@ -12,11 +12,10 @@
 
 <?php $v->section('before'); ?>
 <!-- header -->
-<?php $v->include('site/template/layout/header'); ?>
+<?php $v->include('site/layout/header'); ?>
 <?php $v->endsection(); ?>
 
 <?php $v->section('after'); ?>
-<?php $v->parent(); ?>
 <!-- footer -->
-<?php $v->include('site/template/layout/footer'); ?>
+<?php $v->include('site/layout/footer'); ?>
 <?php $v->endsection(); ?>

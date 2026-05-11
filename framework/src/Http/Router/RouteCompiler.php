@@ -5,7 +5,15 @@ namespace Framework\Http\Router;
 class RouteCompiler
 {
     private const PARAM_REGEX = '/\{(\w+)(?::([^}]+))?\}(\?)?/';
-    private const DEFAULT_PATTERN = '[^/]+';
+    private const ANY_PATTERN = '[^/]+';
+
+    private const PARAM_PATTERNS = [
+        'file' => '[a-z0-9._-]+\.[a-z0-9]+',
+        'uuid' => '[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}',
+        'slug' => '[a-z0-9]+(?:-[a-z0-9]+)*',
+        'int'  => '[0-9]+',
+        'any'  => '[^/]+',
+    ];
 
     public function compile(string $path, string $method, string $handler, string $name, array $middleware): Route
     {
@@ -40,7 +48,7 @@ class RouteCompiler
             [$fullToken, $tokenStart] = $match;
 
             $name = $matches[1][$a][0];
-            $pattern = $matches[2][$a][0] !== '' ? $matches[2][$a][0] : self::DEFAULT_PATTERN;
+            $pattern = $this->resolvePattern($matches[2][$a][0] ?? null);
             $optional = $matches[3][$a][0] === '?';
 
             if (in_array($name, $paramNames)) {
@@ -70,7 +78,16 @@ class RouteCompiler
 
         $body .= preg_quote(substr($path, $offset), '~');
 
-        return ["~^{$body}/?$~u", $paramNames, $paramOptional];
+        return ["~^{$body}/?$~ui", $paramNames, $paramOptional];
+    }
+
+    private function resolvePattern(?string $pattern): string
+    {
+        if ($pattern === null || $pattern === '') {
+            return self::ANY_PATTERN;
+        }
+
+        return self::PARAM_PATTERNS[$pattern] ?? $pattern;
     }
 
     private function assertNonCapturing(string $pattern, string $name, string $path): void

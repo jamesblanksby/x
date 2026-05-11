@@ -10,4 +10,11 @@ class UserService extends EntityService
     {
         parent::__construct($userRepository);
     }
+
+    public function hydrate(array $user): array
+    {
+        $user['active'] = !!$user['password'];
+
+        return parent::hydrate($user);
+    }
 }

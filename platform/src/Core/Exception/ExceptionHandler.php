@@ -38,7 +38,7 @@ class ExceptionHandler extends FrameworkExceptionHandler
 
     private function errorResponse(\Throwable $e, int $status): Response
     {
-        $body = $this->view->render('site/view/error', [
+        $body = $this->view->render('site/template/error', [
             'exception' => $e,
         ]);
 

@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+
     <?php /* meta */ ?>
     <?php $v->section('head:meta'); ?>
     <!-- charset -->
@@ -8,15 +9,19 @@
     <!-- viewport -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
     <?php $v->endsection(); ?>
+
     <?php /* share */ ?>
     <?php $v->section('head:share'); ?>
     <?php $v->endsection(); ?>
+
     <?php /* style */ ?>
     <?php $v->section('head:style'); ?>
     <?php $v->endsection(); ?>
+
     <?php /* script */ ?>
     <?php $v->section('head:script'); ?>
     <?php $v->endsection(); ?>
+    
 </head>
 <body>
 

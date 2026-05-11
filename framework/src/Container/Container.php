@@ -8,6 +8,8 @@ class Container
     private $registry;
     /** @var DependencyResolver */
     private $resolver;
+    /** @var array */
+    private $stack = [];
 
     public function __construct()
     {
@@ -34,11 +36,21 @@ class Container
         }
 
         if (!$this->has($id)) {
-            throw new \RuntimeException("`{$id}` is not registered in the container.");
+            throw new \RuntimeException("Cannot resolve `{$id}`.");
         }
 
-        $instance = $this->make($id);
-        $this->registry->setInstance($id, $instance);
+        if (isset($this->stack[$id])) {
+            throw new \RuntimeException("Circular dependency detected while resolving `{$id}`.");
+        }
+
+        $this->stack[$id] = true;
+
+        try {
+            $instance = $this->make($id);
+            $this->registry->setInstance($id, $instance);
+        } finally {
+            unset($this->stack[$id]);
+        }
 
         return $instance;
     }

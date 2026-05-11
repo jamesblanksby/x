@@ -1,7 +1,6 @@
 <?php $v->extend('base'); ?>
 
 <?php $v->section('head:meta'); ?>
-<?php $v->parent(); ?>
 <!-- title -->
 <title></title>
 <?php $v->endsection(); ?>
@@ -24,10 +23,10 @@
 
 <?php $v->section('before'); ?>
 <!-- header -->
-<?php $v->include('admin/template/layout/header'); ?>
+<?php $v->include('admin/layout/header'); ?>
 <?php $v->endsection(); ?>
 
 <?php $v->section('after'); ?>
 <!-- footer -->
-<?php $v->include('admin/template/layout/footer'); ?>
+<?php $v->include('admin/layout/footer'); ?>
 <?php $v->endsection(); ?>

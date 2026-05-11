@@ -33,8 +33,8 @@ class AuthService
         return true;
     }
 
-    public function invalidate(): void
+    public function logout(): void
     {
-        $this->authenticator->invalidate();
+        $this->authenticator->logout();
     }
 }

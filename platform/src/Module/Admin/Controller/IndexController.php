@@ -2,10 +2,10 @@
 
 namespace Platform\Module\Admin\Controller;
 
-use Framework\Controller\Controller;
 use Framework\Http\Response\Response;
+use Platform\Controller\AdminController;
 
-class IndexController extends Controller
+class IndexController extends AdminController
 {
     public function index(): Response
     {

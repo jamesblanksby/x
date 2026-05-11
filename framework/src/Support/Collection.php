@@ -110,6 +110,7 @@ class Collection
     {
         $clone = clone $this;
         $clone->items = array_merge($this->items, $collection->all());
+
         return $clone;
     }
 }

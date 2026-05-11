@@ -17,7 +17,9 @@ abstract class EntityService
 
     public function insert(array $input): array
     {
-        $instance = $this->repository->insert($input);
+        $data = $this->normalize($input);
+
+        $instance = $this->repository->insert($data);
 
         return $this->find($instance['id']);
     }
@@ -64,6 +66,15 @@ abstract class EntityService
         return $this->sortProperties($instance);
     }
 
+    public function update(array $instance, array $input): array
+    {
+        $data = $this->normalize($input, $instance);
+
+        $this->repository->update($instance['id'], $data);
+
+        return $this->find($instance['id']);
+    }
+
     public function delete(array $instance): void
     {
         // @TODO block, content, page and image
@@ -78,8 +89,10 @@ abstract class EntityService
 
     protected function applyContext(array $where, array $context = []): array
     {
-        if (isset($context['display']) && $context['display'] !== null) {
-            $where['display'] = (bool) $context['display'];
+        $display = $context['display'] ?? null;
+
+        if ($display !== null) {
+            $where['display'] = (bool) $display;
         }
 
         return $where;

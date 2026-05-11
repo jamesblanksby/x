@@ -2,12 +2,12 @@
 
 namespace Platform\Module\Admin\Controller;
 
-use Framework\Controller\Controller;
 use Framework\Http\Request\Request;
 use Framework\Http\Response\Response;
+use Platform\Controller\AdminController;
 use Platform\Module\Admin\Service\AuthService;
 
-class AuthController extends Controller
+class AuthController extends AdminController
 {
     /** @var AuthService */
     private $authService;
@@ -19,12 +19,12 @@ class AuthController extends Controller
 
     public function login(): Response
     {
-        return $this->render('admin/view/login');
+        return $this->render('admin/template/login');
     }
 
     public function authenticate(Request $request): Response
     {
-        $input = $request->body->all();
+        $input = $request->input->all();
 
         $email = $input['email'];
         $password = $input['password'];
@@ -32,7 +32,7 @@ class AuthController extends Controller
         $success = $this->authService->authenticate($email, $password);
 
         if (!$success) {
-            return $this->json([
+            return $this->respond([
                 'success' => false,
                 'text' => 'Invalid login credentials',
             ]);
@@ -40,7 +40,7 @@ class AuthController extends Controller
 
         $redirect = $request->query->get('redirect', $this->generateUrl('admin.page.index'));
 
-        return $this->json([
+        return $this->respond([
             'success' => true,
             'redirect' => $redirect,
         ]);
@@ -48,7 +48,7 @@ class AuthController extends Controller
 
     public function logout(): Response
     {
-        $this->authService->invalidate();
+        $this->authService->logout();
 
         return $this->redirectToRoute('admin.page.index');
     }

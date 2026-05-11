@@ -14,7 +14,7 @@ class Authenticator implements AuthenticatorInterface
     /** @var UserService */
     private $userService;
 
-    private const AUTH_KEY = 'user_id';
+    private const KEY = 'user_id';
 
     public function __construct(
         Session $session,
@@ -31,7 +31,7 @@ class Authenticator implements AuthenticatorInterface
 
     public function user(): ?AuthenticatedUser
     {
-        $id = $this->session->get(self::AUTH_KEY);
+        $id = $this->session->get(self::KEY);
 
         if (!$id) {
             return null;
@@ -43,7 +43,7 @@ class Authenticator implements AuthenticatorInterface
     public function login(int $id): void
     {
         $this->session->regenerate();
-        $this->session->set(self::AUTH_KEY, $id);
+        $this->session->set(self::KEY, $id);
     }
 
     public function logout(): void

@@ -18,12 +18,12 @@ class HandlerResolver
 
     public function resolve(string $handler): array
     {
-        [$controllerName, $methodName] = $this->parseHandler($handler);
+        [$controllerClass, $methodName] = $this->parseHandler($handler);
 
-        $controller = $this->container->get($controllerName);
+        $controller = $this->container->get($controllerClass);
 
         if (!method_exists($controller, $methodName)) {
-            throw new HttpException(500, "Controller method `{$handler}` not found.");
+            throw new HttpException(500, "Controller handler `{$handler}` not found.");
         }
 
         if ($controller instanceof Controller) {

@@ -23,8 +23,6 @@ class View extends ValueObject
     private $stack = [];
     /** @var array */
     private $sections = [];
-    /** @var array */
-    private $parents = [];
 
     public function __construct(array $options = [])
     {
@@ -52,33 +50,24 @@ class View extends ValueObject
         return $this;
     }
 
-    public function section(string $name): void
+    public function section(string $name, bool $extend = true): void
     {
-        $this->stack[] = $name;
-        $this->parents[$name] = $this->sections[$name] ?? '';
-
+        $this->stack[] = new Section($name, $extend);
         $this->startBuffer();
     }
 
     public function endsection(): void
     {
-        $name = array_pop($this->stack);
-        $content = $this->captureBuffer();
+        $section = array_pop($this->stack);
 
-        if (!isset($this->sections[$name])) {
-            $this->sections[$name] = '';
+        if (!$section) {
+            throw new \UnderflowException('Cannot end a section that has not been started.');
         }
 
-        $this->sections[$name] .= $content;
+        $name = $section->name;
+        $content = $this->captureBuffer();
 
-        echo $this->sections[$name];
-    }
-
-    public function parent(): void
-    {
-        $name = end($this->stack);
-
-        echo $this->parents[$name] ?? '';
+        echo $this->resolveSectionContent($name, $content, $section);
     }
 
     public function include(string $template, array $data = []): void
@@ -87,16 +76,6 @@ class View extends ValueObject
         $clone->layout = null;
 
         echo $clone->render($template, $data);
-    }
-
-    /** @return mixed */
-    public function __call(string $name, array $args)
-    {
-        if (!isset($this->functions[$name])) {
-            throw new \BadMethodCallException("Method `{$name}` does not exist.");
-        }
-
-        return ($this->functions[$name])(...$args);
     }
 
     public function addPath(string $path): void
@@ -118,6 +97,18 @@ class View extends ValueObject
     public function registerExtension(ExtensionInterface $extension): void
     {
         $extension->register($this);
+    }
+
+    /** @return mixed */
+    public function __call(string $name, array $args)
+    {
+        $function = $this->functions[$name] ?? null;
+
+        if (!$function) {
+            throw new \BadMethodCallException("Method `{$name}` does not exist.");
+        }
+
+        return $function(...$args);
     }
 
     private function renderTemplate(string $template, array $data): string
@@ -156,6 +147,27 @@ class View extends ValueObject
         }
 
         throw new \InvalidArgumentException("View `{$template}` not found.");
+    }
+
+    private function resolveSectionContent(string $name, string $content, Section $section): string
+    {
+        $child = $this->sections[$name] ?? null;
+
+        if (!$child) {
+            $this->sections[$name] = new Section(
+                $name,
+                $section->extend,
+                $content
+            );
+
+            return $content;
+        }
+
+        if ($child->extend) {
+            return $content . $child->content;
+        }
+
+        return $child->content;
     }
 
     private function startBuffer(): void

@@ -8,7 +8,7 @@
 $page = [
     // GET
     ['GET', '/', 'PageController::index'],
-    ['GET', '/{page:[\w-]+}', 'PageController::detail'],
+    ['GET', '/{page:slug}', 'PageController::detail'],
 ];
 
 /* --------------------------------------------------------------------- SITE --- */

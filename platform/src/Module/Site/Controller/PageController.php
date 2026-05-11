@@ -25,7 +25,7 @@ class PageController extends Controller
     {
         $page = $this->pageService->get($page, 'slug');
 
-        return $this->render('site/view/page.detail', [
+        return $this->render('site/template/page.detail', [
             'page' => $page,
         ]);
     }
