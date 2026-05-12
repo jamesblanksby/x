@@ -24,7 +24,7 @@ class Request
     private $input;
     /** @var ParamBag */
     private $cookies;
-    /** @var Session */
+    /** @var ?Session */
     private $session;
     /** @var string */
     private $method;

@@ -5,7 +5,6 @@ namespace Framework\Core;
 use Framework\Container\Container;
 use Framework\Core\Exception\ExceptionHandler;
 use Framework\Core\Exception\ExceptionHandlerInterface;
-use Framework\Http\Middleware\SessionStartMiddleware;
 use Framework\Http\Request\Request;
 use Framework\Http\Request\RequestDispatcher;
 use Framework\Http\Request\RequestFactory;
@@ -19,10 +18,6 @@ abstract class Kernel
     protected $context;
     /** @var bool */
     protected $booted = false;
-    /** @var array */
-    protected $middleware = [
-        SessionStartMiddleware::class,
-    ];
 
     public function __construct(string $environment, bool $debug)
     {
@@ -131,9 +126,7 @@ abstract class Kernel
 
     private function dispatchHttp(Request $request): Response
     {
-        $dispatcher = $this->container->make(RequestDispatcher::class, [
-            'middleware' => $this->middleware,
-        ]);
+        $dispatcher = $this->container->get(RequestDispatcher::class);
 
         return $dispatcher->dispatch($request);
     }

@@ -17,19 +17,15 @@ class RequestDispatcher
     private $requestHandler;
     /** @var Router */
     private $router;
-    /** @var array */
-    private $middleware;
 
     public function __construct(
         Container $container,
         RequestHandler $requestHandler,
-        Router $router,
-        array $middleware
+        Router $router
     ) {
         $this->container = $container;
         $this->requestHandler = $requestHandler;
         $this->router = $router;
-        $this->middleware = $middleware;
     }
 
     public function dispatch(Request $request): Response
@@ -59,9 +55,9 @@ class RequestDispatcher
             return $this->requestHandler->handle($request, $route);
         };
 
-        $middleware = array_merge($this->middleware, $route->getMiddleware());
+        $middleware = array_reverse($route->getMiddleware());
 
-        $pipeline = array_reduce(array_reverse($middleware), function (callable $next, string $middlewareClass) {
+        $pipeline = array_reduce($middleware, function (callable $next, string $middlewareClass) {
             return function (Request $request) use ($next, $middlewareClass): Response {
                 $middleware = $this->container->get($middlewareClass);
                 return $middleware->handle($request, $next);

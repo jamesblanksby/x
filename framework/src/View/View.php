@@ -171,10 +171,10 @@ class View
         }
 
         if ($child->shouldExtend()) {
-            return $content . $child->content;
+            return $content . $child->getContent();
         }
 
-        return $child->content;
+        return $child->getContent();
     }
 
     private function startBuffer(): void

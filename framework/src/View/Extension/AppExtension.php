@@ -28,14 +28,15 @@ class AppExtension implements ExtensionInterface
 
     public function register(View $view): void
     {
-        $session = $this->request->getSession();
+        // @TODO session
+        // $session = $this->request->getSession();
 
         $view->addGlobal('app', [
             'debug' => $this->context->isDebug(),
             'environment' => $this->context->getEnvironment(),
-            'flash' => $session->getFlash(),
+            // 'flash' => $session->getFlash(),
             'request' => $this->request,
-            'session' => $session,
+            // 'session' => $session,
             'user' => $this->authenticator->user(),
         ]);
     }
