@@ -2,23 +2,22 @@
 
 namespace Platform\Form;
 
-use Framework\Support\ValueObject;
 use Platform\Form\Block\BlockInterface;
 use Platform\Form\Element\ElementInterface;
 use Platform\Form\Renderer\FieldRenderer;
 
-class Field extends ValueObject
+class Field
 {
     /** @var ?string */
-    public $label;
+    private $label;
     /** @var ?string */
-    public $info;
+    private $info;
     /** @var ?ElementInterface */
-    public $element;
+    private $element;
     /** @var array */
-    public $before = [];
+    private $before = [];
     /** @var array */
-    public $after = [];
+    private $after = [];
 
     public function __construct(?string $label = null, ?string $info = null, ?ElementInterface $element = null)
     {
@@ -68,6 +67,31 @@ class Field extends ValueObject
     public function render(): string
     {
         return (new FieldRenderer($this))->render();
+    }
+
+    public function getLabel(): ?string
+    {
+        return $this->label;
+    }
+
+    public function getInfo(): ?string
+    {
+        return $this->info;
+    }
+
+    public function getElement(): ?ElementInterface
+    {
+        return $this->element;
+    }
+
+    public function getBefore(): array
+    {
+        return $this->before;
+    }
+
+    public function getAfter(): array
+    {
+        return $this->after;
     }
 
     public function __toString(): string

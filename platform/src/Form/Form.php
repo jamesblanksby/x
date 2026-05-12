@@ -46,7 +46,7 @@ class Form extends ValueObject
         $this->errors = [];
 
         foreach ($this->fields as $name => $field) {
-            $element = $field->element;
+            $element = $field->getElement();
 
             if (!$element) {
                 continue;
@@ -56,7 +56,7 @@ class Form extends ValueObject
             $value = $this->getValue($name);
 
             if ($required && ($value === null || $value === '')) {
-                $label = $field->label ?? $name;
+                $label = $field->getLabel() ?? $name;
                 $this->errors[$name] = "{$label} is required.";
             }
         }

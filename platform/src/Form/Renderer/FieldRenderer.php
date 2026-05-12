@@ -38,7 +38,7 @@ class FieldRenderer extends Renderer
 
     public function label(): string
     {
-        $label = $this->field->label;
+        $label = $this->field->getLabel();
 
         if (!$label) {
             return '';
@@ -54,7 +54,7 @@ class FieldRenderer extends Renderer
 
     public function info(): string
     {
-        $info = $this->field->info;
+        $info = $this->field->getInfo();
 
         if (!$info) {
             return '';
@@ -91,11 +91,13 @@ class FieldRenderer extends Renderer
 
     public function element(): string
     {
-        if (!$this->field->element) {
+        $element = $this->field->getElement();
+
+        if (!$element) {
             return '';
         }
 
-        return $this->field->element->render();
+        return $element->render();
     }
 
     public function after(): string
@@ -110,7 +112,7 @@ class FieldRenderer extends Renderer
 
     private function resolveFor(): string
     {
-        $element = $this->field->element;
+        $element = $this->field->getElement();
 
         if (!$element) {
             return '';
