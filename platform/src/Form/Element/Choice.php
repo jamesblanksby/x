@@ -7,11 +7,11 @@ use Platform\Form\Renderer\ChoiceRenderer;
 class Choice extends Element
 {
     /** @var string */
-    public $type;
+    private $type;
     /** @var array */
-    public $options = [];
+    private $options = [];
     /** @var array */
-    public $values = [];
+    private $values = [];
 
     public function __construct(string $name)
     {
@@ -52,5 +52,20 @@ class Choice extends Element
     public function render(): string
     {
         return (new ChoiceRenderer($this))->render();
+    }
+
+    public function getType(): string
+    {
+        return $this->type;
+    }
+
+    public function getOptions(): array
+    {
+        return $this->options;
+    }
+
+    public function getValues(): array
+    {
+        return $this->values;
     }
 }

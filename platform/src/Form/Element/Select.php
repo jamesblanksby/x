@@ -7,9 +7,9 @@ use Platform\Form\Renderer\ChoiceRenderer;
 class Choice extends Element
 {
     /** @var ?string */
-    public $placeholder = null;
+    private $placeholder = null;
     /** @var array */
-    public $options = [];
+    private $options = [];
 
     /** @return static */
     public function placeholder(?string $placeholder)
@@ -25,11 +25,30 @@ class Choice extends Element
         return $this;
     }
 
-    // multiple
-    // size
+    /** @return static */
+    public function multiple(bool $multiple = true)
+    {
+        $this->set('multiple', $multiple);
+    }
+
+    /** @return static */
+    public function size(?int $size)
+    {
+        $this->set('size', $size);
+    }
 
     public function render(): string
     {
         return (new ChoiceRenderer($this))->render();
+    }
+
+    public function getPlaceholder(): ?string
+    {
+        return $this->placeholder;
+    }
+
+    public function getOptions(): array
+    {
+        return $this->options;
     }
 }

@@ -31,7 +31,7 @@ class InputRenderer extends Renderer
 
     public function element(): string
     {
-        $attribute = self::buildAttributes($this->input->attributes);
+        $attribute = self::buildAttributes($this->input->getAttributes());
 
         return "<input {$attribute}>";
     }

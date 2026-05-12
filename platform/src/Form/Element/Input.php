@@ -7,7 +7,7 @@ use Platform\Form\Renderer\InputRenderer;
 class Input extends Element
 {
     /** @var string */
-    public $type;
+    private $type;
 
     public function __construct(string $name)
     {
@@ -102,9 +102,13 @@ class Input extends Element
         return $this;
     }
 
-
     public function render(): string
     {
         return (new InputRenderer($this))->render();
+    }
+
+    public function getType(): string
+    {
+        return $this->type;
     }
 }

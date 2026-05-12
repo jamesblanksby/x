@@ -7,23 +7,23 @@ use Platform\Form\Renderer\UploadRenderer;
 class Upload extends Element
 {
     /** @var ?string */
-    public $placeholder = null;
+    private $placeholder = null;
     /** @var ?string */
-    public $value = null;
+    private $value = null;
     /** @var bool */
-    public $disabled = false;
+    private $disabled = false;
     /** @var ?string */
-    public $accept = null;
+    private $accept = null;
     /** @var ?int */
-    public $limit = 1;
+    private $limit = 1;
     /** @var ?int */
-    public $maxsize = null;
+    private $maxsize = null;
     /** @var int */
-    public $chunk = ((1024 * 1024) * 2);
+    private $chunk = ((1024 * 1024) * 2);
     /** @var ?string */
-    public $url = null;
+    private $url = null;
     /** @var bool */
-    public $removable = false;
+    private $removable = false;
 
     /** @return static */
     public function placeholder(?string $placeholder)
@@ -89,5 +89,50 @@ class Upload extends Element
     public function render(): string
     {
         return (new UploadRenderer($this))->render();
+    }
+
+    public function getPlaceholder(): ?string
+    {
+        return $this->placeholder;
+    }
+
+    public function getValue(): ?string
+    {
+        return $this->value;
+    }
+
+    public function getAccept(): ?string
+    {
+        return $this->accept;
+    }
+
+    public function getLimit(): ?int
+    {
+        return $this->limit;
+    }
+
+    public function getMaxsize(): ?int
+    {
+        return $this->maxsize;
+    }
+
+    public function getChunk(): int
+    {
+        return $this->chunk;
+    }
+
+    public function getUrl(): ?string
+    {
+        return $this->url;
+    }
+
+    public function isDisabled(): bool
+    {
+        return $this->disabled;
+    }
+
+    public function isRemoveable(): bool
+    {
+        return $this->removable;
     }
 }

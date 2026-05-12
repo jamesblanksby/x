@@ -2,12 +2,10 @@
 
 namespace Platform\Form\Element;
 
-use Framework\Support\ValueObject;
-
-abstract class Element extends ValueObject implements ElementInterface
+abstract class Element implements ElementInterface
 {
     /** @var array */
-    public $attributes = [];
+    private $attributes = [];
 
     public function __construct(string $name)
     {
@@ -89,6 +87,11 @@ abstract class Element extends ValueObject implements ElementInterface
     public function attribute(string $key, $default = null)
     {
         return $this->attributes[$key] ?? $default;
+    }
+
+    public function getAttributes(): array
+    {
+        return $this->attributes;
     }
 
     public function __toString(): string

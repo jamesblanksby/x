@@ -7,7 +7,7 @@ use Platform\Form\Renderer\TextareaRenderer;
 class Textarea extends Element
 {
     /** @var ?string */
-    public $value = null;
+    private $value = null;
 
     public function value(?string $value)
     {
@@ -60,5 +60,10 @@ class Textarea extends Element
     public function render(): string
     {
         return (new TextareaRenderer($this))->render();
+    }
+
+    public function getValue(): ?string
+    {
+        return $this->value;
     }
 }

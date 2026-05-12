@@ -32,8 +32,8 @@ class TextareaRenderer extends Renderer
     public function element(): string
     {
         $textarea = $this->textarea;
-        $attribute = self::buildAttributes($textarea->attributes);
+        $attribute = self::buildAttributes($textarea->getAttributes());
 
-        return "<textarea {$attribute}>{$textarea->value}</textarea>";
+        return "<textarea {$attribute}>{$textarea->getValue()}</textarea>";
     }
 }
