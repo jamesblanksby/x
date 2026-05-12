@@ -36,7 +36,7 @@ class AuthController extends AdminController
                 ]);
             }
 
-            $redirect = $request->query->get('redirect', $this->generateUrl('admin.page.index'));
+            $redirect = $request->getQuery()->get('redirect', $this->generateUrl('admin.page.index'));
 
             return $this->respond([
                 'success' => true,

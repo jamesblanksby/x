@@ -28,7 +28,7 @@ class AppExtension implements ExtensionInterface
 
     public function register(View $view): void
     {
-        $session = $this->request->session;
+        $session = $this->request->getSession();
 
         $view->addGlobal('app', [
             'debug' => $this->context->isDebug(),

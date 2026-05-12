@@ -31,7 +31,7 @@ class ImageController extends Controller
             ], 301);
         }
 
-        $size = $request->query->get('size');
+        $size = $request->getQuery()->get('size');
         $path = $image['variants'][$size]['path'] ?? $file['path'];
 
         return new FileResponse($path, $file['name']);

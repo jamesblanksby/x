@@ -24,7 +24,7 @@ class PageController extends AdminController
 
     public function list(Request $request): Response
     {
-        $type = $request->query->get('type', 'system');
+        $type = $request->getQuery()->get('type', 'system');
 
         $pages = $this->pageService->select($type);
 

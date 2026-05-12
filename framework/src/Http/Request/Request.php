@@ -7,33 +7,31 @@ use Framework\Http\Bag\HeaderBag;
 use Framework\Http\Bag\InputBag;
 use Framework\Http\Bag\ParamBag;
 use Framework\Http\Session\Session;
-use Framework\Support\ValueObject;
 
-class Request extends ValueObject
+class Request
 {
     /** @var ParamBag */
-    public $server;
+    private $server;
     /** @var HeaderBag */
-    public $headers;
+    private $headers;
     /** @var ParamBag */
-    public $query;
+    private $query;
     /** @var ParamBag */
-    public $body;
+    private $body;
     /** @var FileBag */
-    public $files;
+    private $files;
     /** @var InputBag */
-    public $input;
+    private $input;
     /** @var ParamBag */
-    public $cookies;
+    private $cookies;
     /** @var Session */
-    public $session;
+    private $session;
     /** @var string */
-    public $method;
+    private $method;
     /** @var string */
-    public $uri;
+    private $uri;
     /** @var string */
-    public $path;
-
+    private $path;
     /** @var array */
     private $attributes = [];
 
@@ -56,10 +54,49 @@ class Request extends ValueObject
             $this->files
         );
         $this->cookies = new ParamBag($cookies);
-
         $this->method = strtoupper($this->server->get('REQUEST_METHOD', 'GET'));
         $this->uri = $this->server->get('REQUEST_URI', '/');
         $this->path = parse_url($this->uri, PHP_URL_PATH) ?? '/';
+    }
+
+    public function getServer(): ParamBag
+    {
+        return $this->server;
+    }
+
+    public function getHeaders(): HeaderBag
+    {
+        return $this->headers;
+    }
+
+    public function getQuery(): ParamBag
+    {
+        return $this->query;
+    }
+
+    public function getBody(): ParamBag
+    {
+        return $this->body;
+    }
+
+    public function getFiles(): FileBag
+    {
+        return $this->files;
+    }
+
+    public function getInput(): InputBag
+    {
+        return $this->input;
+    }
+
+    public function getCookies(): ParamBag
+    {
+        return $this->cookies;
+    }
+
+    public function getSession(): ?Session
+    {
+        return $this->session;
     }
 
     public function setSession(Session $session): void
@@ -67,10 +104,24 @@ class Request extends ValueObject
         $this->session = $session;
     }
 
+    public function getMethod(): string
+    {
+        return $this->method;
+    }
+
+    public function getUri(): string
+    {
+        return $this->uri;
+    }
+
+    public function getPath(): string
+    {
+        return $this->path;
+    }
+
     public function getScheme(): string
     {
         $https = $this->server->get('HTTPS');
-
         return ($https && $https !== 'off') ? 'https' : 'http';
     }
 
@@ -89,6 +140,11 @@ class Request extends ValueObject
         return dirname($this->server->get('SCRIPT_NAME', ''));
     }
 
+    public function getBaseUrl(): string
+    {
+        return $this->getSchemeAndHost() . $this->getBasePath();
+    }
+
     public function getRelativePath(): string
     {
         return substr($this->path, strlen(rtrim($this->getBasePath(), '/')));
@@ -97,11 +153,6 @@ class Request extends ValueObject
     public function getQueryString(): ?string
     {
         return parse_url($this->uri, PHP_URL_QUERY) ?: null;
-    }
-
-    public function getBaseUrl(): string
-    {
-        return $this->getSchemeAndHost() . $this->getBasePath();
     }
 
     public function getUrl(): string
@@ -122,6 +173,15 @@ class Request extends ValueObject
         return $this->getBaseUrl() . '/' . ltrim($path, '/');
     }
 
+    /**
+     * @param mixed $default
+     * @return mixed
+     */
+    public function getAttribute(string $name, $default = null)
+    {
+        return $this->attributes[$name] ?? $default;
+    }
+
     public function isSecure(): bool
     {
         return $this->getScheme() === 'https';
@@ -136,15 +196,6 @@ class Request extends ValueObject
         }
 
         return in_array(strtolower($header), ['fetch', 'xmlhttprequest']);
-    }
-
-    /**
-     * @param mixed $default
-     * @return mixed
-     */
-    public function getAttribute(string $name, $default = null)
-    {
-        return $this->attributes[$name] ?? $default;
     }
 
     /**

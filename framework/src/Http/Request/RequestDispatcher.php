@@ -36,12 +36,12 @@ class RequestDispatcher
     {
         $path = $request->getRelativePath();
 
-        $result = $this->router->match($request->method, $path);
+        $result = $this->router->match($request->getMethod(), $path);
 
         if (!$result->isAllowed()) {
             throw new MethodNotAllowedException(sprintf(
                 'Method `%s` not allowed. Allowed: %s.',
-                $request->method,
+                $request->getMethod(),
                 implode(', ', $result->getAllowed())
             ));
         }

@@ -33,7 +33,7 @@ class Form
     /** @return static */
     public function handleRequest(Request $request)
     {
-        $this->data = $request->input->all();
+        $this->data = $request->getInput()->all();
         $this->submitted = true;
 
         return $this;
