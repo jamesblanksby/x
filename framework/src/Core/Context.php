@@ -2,22 +2,35 @@
 
 namespace Framework\Core;
 
-use Framework\Support\ValueObject;
-
-class Context extends ValueObject
+class Context
 {
     /** @var string */
-    public $root;
+    private $root;
     /** @var string */
-    public $environment;
+    private $environment;
     /** @var bool */
-    public $debug;
+    private $debug;
 
     public function __construct(string $root, string $environment, bool $debug)
     {
         $this->root = $root;
         $this->environment = $environment;
         $this->debug = $debug;
+    }
+
+    public function getRoot(): string
+    {
+        return $this->root;
+    }
+
+    public function getEnvironment(): string
+    {
+        return $this->environment;
+    }
+
+    public function isDebug(): bool
+    {
+        return $this->debug;
     }
 
     public function path(string $path): string

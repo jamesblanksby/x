@@ -29,7 +29,7 @@ class ExceptionHandler implements ExceptionHandlerInterface
     {
         $status = $e->getStatus();
 
-        if ($this->context->debug) {
+        if ($this->context->isDebug()) {
             return $this->debugResponse($e, $status);
         }
 
@@ -41,7 +41,7 @@ class ExceptionHandler implements ExceptionHandlerInterface
 
     protected function handleException(\Throwable $e): Response
     {
-        if ($this->context->debug) {
+        if ($this->context->isDebug()) {
             return $this->debugResponse($e, 500);
         }
 

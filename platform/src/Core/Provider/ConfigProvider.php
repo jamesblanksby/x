@@ -13,7 +13,7 @@ class ConfigProvider implements ProviderInterface
         $app = require $context->path('app/config/app.php');
         $env = require $context->path('app/config/env.php');
 
-        $config = array_merge($app, $env[$context->environment]);
+        $config = array_merge($app, $env[$context->getEnvironment()]);
 
         foreach ($config as $key => $value) {
             $container->set("config.{$key}", $value);

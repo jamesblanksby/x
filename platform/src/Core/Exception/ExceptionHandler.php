@@ -29,7 +29,7 @@ class ExceptionHandler extends FrameworkExceptionHandler
 
     protected function handleException(\Throwable $e): Response
     {
-        if ($this->context->debug) {
+        if ($this->context->isDebug()) {
             return parent::handleException($e);
         }
 

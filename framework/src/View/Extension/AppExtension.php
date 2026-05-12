@@ -31,8 +31,8 @@ class AppExtension implements ExtensionInterface
         $session = $this->request->session;
 
         $view->addGlobal('app', [
-            'debug' => $this->context->debug,
-            'environment' => $this->context->environment,
+            'debug' => $this->context->isDebug(),
+            'environment' => $this->context->getEnvironment(),
             'flash' => $session->flash,
             'request' => $this->request,
             'session' => $session,
