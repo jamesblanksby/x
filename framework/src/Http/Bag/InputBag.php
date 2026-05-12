@@ -2,16 +2,14 @@
 
 namespace Framework\Http\Bag;
 
-use Framework\Support\ValueObject;
-
-class InputBag extends ValueObject
+class InputBag
 {
     /** @var ParamBag */
-    public $query;
+    private $query;
     /** @var ParamBag */
-    public $body;
+    private $body;
     /** @var FileBag */
-    public $files;
+    private $files;
 
     public function __construct(
         ParamBag $query,
@@ -44,5 +42,20 @@ class InputBag extends ValueObject
             $this->body->all(),
             $this->files->all()
         );
+    }
+
+    public function getQuery(): ParamBag
+    {
+        return $this->query;
+    }
+
+    public function getBody(): ParamBag
+    {
+        return $this->body;
+    }
+
+    public function getFiles(): FileBag
+    {
+        return $this->files;
     }
 }
