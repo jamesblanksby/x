@@ -37,7 +37,9 @@ class AuthMiddleware implements MiddlewareInterface
         $user = $this->authenticator->user();
 
         if ($this->requiresAuthentication($request) && !$user) {
-            $url = $this->urlGenerator->generate('admin.auth.login', [], true);
+            $url = $this->urlGenerator->generate('admin.auth.login', [
+                'redirect' => $request->getUrl(),
+            ], true);
 
             return new RedirectResponse($url);
         }
