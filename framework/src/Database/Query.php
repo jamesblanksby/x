@@ -2,15 +2,12 @@
 
 namespace Framework\Database;
 
-use Framework\Support\ValueObject;
-
-class Query extends ValueObject
+class Query
 {
     /** @var string */
-    public $type = 'select';
+    private $type = 'select';
     /** @var string */
-    public $table = '';
-
+    private $table = '';
     /** @var Database */
     private $database;
     /** @var array */
@@ -233,6 +230,16 @@ class Query extends ValueObject
         $this->limit = null;
         $this->offset = null;
         $this->data = [];
+    }
+
+    public function getType(): string
+    {
+        return $this->type;
+    }
+
+    public function getTable(): string
+    {
+        return $this->table;
     }
 
     /**
