@@ -2,15 +2,12 @@
 
 namespace Framework\View;
 
-use Framework\Support\Collection;
-use Framework\Support\ValueObject;
 use Framework\View\Extension\ExtensionInterface;
 
-class View extends ValueObject
+class View
 {
-    /** @var Collection */
-    public $options;
-
+    /** @var array */
+    private $options = [];
     /** @var array */
     private $paths = [];
     /** @var array */
@@ -26,7 +23,7 @@ class View extends ValueObject
 
     public function __construct(array $options = [])
     {
-        $this->options = new Collection($options);
+        $this->options = $options;
     }
 
     public function render(string $template, array $data = []): string
@@ -75,6 +72,15 @@ class View extends ValueObject
         $clone->layout = null;
 
         echo $clone->render($template, $data);
+    }
+
+    /**
+     * @param mixed $default
+     * @return mixed
+     */
+    public function getOption(string $key, $default = null)
+    {
+        return $this->options[$key] ?? $default;
     }
 
     public function addPath(string $path): void
