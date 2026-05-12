@@ -3,16 +3,14 @@
 namespace Platform\Form;
 
 use Framework\Http\Request\Request;
-use Framework\Support\ValueObject;
 use Platform\Form\Renderer\FormRenderer;
 
-class Form extends ValueObject
+class Form
 {
     /** @var array */
-    public $fields;
+    private $fields;
     /** @var array */
-    public $options = [];
-
+    private $options = [];
     /** @var array */
     private $data = [];
     /** @var array */
@@ -27,6 +25,11 @@ class Form extends ValueObject
         $this->options = $options;
     }
 
+    public function render(): string
+    {
+        return (new FormRenderer($this))->render();
+    }
+
     /** @return static */
     public function handleRequest(Request $request)
     {
@@ -34,6 +37,32 @@ class Form extends ValueObject
         $this->submitted = true;
 
         return $this;
+    }
+
+    public function getFields(): array
+    {
+        return $this->fields;
+    }
+
+    public function getField(string $name): ?Field
+    {
+        return $this->fields[$name] ?? null;
+    }
+
+    public function getOptions(): array
+    {
+        return $this->options;
+    }
+
+    /** @return mixed */
+    public function getValue(string $name)
+    {
+        return $this->data[$name] ?? null;
+    }
+
+    public function getError(string $name): ?string
+    {
+        return $this->errors[$name] ?? null;
     }
 
     public function isSubmitted(): bool
@@ -62,27 +91,6 @@ class Form extends ValueObject
         }
 
         return !$this->errors;
-    }
-
-    public function getField(string $name): ?Field
-    {
-        return $this->fields[$name] ?? null;
-    }
-
-    /** @return mixed */
-    public function getValue(string $name)
-    {
-        return $this->data[$name] ?? null;
-    }
-
-    public function getError(string $name): ?string
-    {
-        return $this->errors[$name] ?? null;
-    }
-
-    public function render(): string
-    {
-        return (new FormRenderer($this))->render();
     }
 
     public function __toString(): string

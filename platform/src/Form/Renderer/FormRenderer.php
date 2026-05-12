@@ -57,10 +57,12 @@ class FormRenderer extends Renderer
 
     public function fields(): string
     {
+        $form = $this->form;
+
         $html = '';
 
-        foreach ($this->form->fields as $name => $field) {
-            $error = $this->form->getError($name);
+        foreach ($form->getFields() as $name => $field) {
+            $error = $form->getError($name);
             // @TODO error
             $html .= $field->render();
         }
