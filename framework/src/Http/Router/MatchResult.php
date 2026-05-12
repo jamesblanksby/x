@@ -2,16 +2,14 @@
 
 namespace Framework\Http\Router;
 
-use Framework\Support\ValueObject;
-
-class MatchResult extends ValueObject
+class MatchResult
 {
     /** @var ?Route */
-    public $route = null;
+    private $route = null;
     /** @var array */
-    public $params = [];
+    private $params = [];
     /** @var array */
-    public $allowed = [];
+    private $allowed = [];
 
     public function __construct(
         ?Route $route = null,
@@ -36,5 +34,30 @@ class MatchResult extends ValueObject
     public static function notFound(): self
     {
         return new self();
+    }
+
+    public function getRoute(): ?Route
+    {
+        return $this->route;
+    }
+
+    public function getParams(): array
+    {
+        return $this->params;
+    }
+
+    public function getAllowed(): array
+    {
+        return $this->allowed;
+    }
+
+    public function isMatched(): bool
+    {
+        return !!$this->route;
+    }
+
+    public function isAllowed(): bool
+    {
+        return !$this->allowed;
     }
 }

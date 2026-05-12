@@ -38,22 +38,22 @@ class RequestDispatcher
 
         $result = $this->router->match($request->method, $path);
 
-        if ($result->allowed) {
+        if (!$result->isAllowed()) {
             throw new MethodNotAllowedException(sprintf(
                 'Method `%s` not allowed. Allowed: %s.',
                 $request->method,
-                implode(', ', $result->allowed)
+                implode(', ', $result->getAllowed())
             ));
         }
 
-        if (!$result->route) {
+        if (!$result->isMatched()) {
             throw new NotFoundException("No route matched `{$path}`.");
         }
 
-        $request = $request->withAttribute(Route::class, $result->route);
-        $request = $request->withAttributes($result->params);
+        $request = $request->withAttribute(Route::class, $result->getRoute());
+        $request = $request->withAttributes($result->getParams());
 
-        $route = $result->route;
+        $route = $result->getRoute();
 
         $core = function (Request $request) use ($route): Response {
             return $this->requestHandler->handle($request, $route);
