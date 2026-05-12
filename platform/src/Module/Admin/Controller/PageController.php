@@ -33,58 +33,7 @@ class PageController extends AdminController
         ]);
     }
 
-    public function new(): Response
-    {
-        return $this->render('admin/template/page/page.form', [
-            'types' => [], // @TODO
-        ]);
-    }
-
-    public function insert(Request $request): Response
-    {
-        $input = $request->input->all();
-
-        $page = $this->pageService->insert($input);
-
-        $redirect = $this->generateUrl('admin.page.edit', [
-            'page' => $page['uid'],
-            'redirect' => $request->query->get('redirect'),
-        ]);
-
-        return $this->respond([
-            'success' => true,
-            'text' => 'Page successfully created',
-            'redirect' => $redirect,
-        ]);
-    }
-
-    public function edit(string $page): Response
-    {
-        $page = $this->pageService->get($page, 'uid');
-
-        return $this->render('admin/template/page/page.form', [
-            'types' => [], // @TODO
-            'page' => $page,
-        ]);
-    }
-
-    public function update(Request $request, string $page): Response
-    {
-        $input = $request->input->all();
-
-        $page = $this->pageService->get($page, 'uid');
-        $this->pageService->update($page, $input);
-
-        $redirect = $this->generateUrl('admin.page.edit', [
-            'page' => $page['uid'],
-            'redirect' => $request->query->get('redirect'),
-        ]);
-
-        return $this->respond([
-            'text' => 'Page successfully updated',
-            'redirect' => $redirect,
-        ]);
-    }
+    // @TODO insert/update
 
     public function delete(string $page): Response
     {

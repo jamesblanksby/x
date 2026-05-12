@@ -13,7 +13,7 @@ $auth = [
     ['GET', '/logout', 'AuthController::logout'],
 
     // POST
-    ['POST', '/authenticate', 'AuthController::authenticate'],
+    ['POST', '/login', 'AuthController::login'],
 ];
 
 /* --------------------------------------------------------------------- PAGE --- */

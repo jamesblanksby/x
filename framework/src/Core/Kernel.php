@@ -55,7 +55,7 @@ abstract class Kernel
 
     public function run(?Request $request = null): void
     {
-        if ($request === null) {
+        if (!$request) {
             $request = RequestFactory::createFromGlobals();
         }
 

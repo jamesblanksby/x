@@ -4,6 +4,7 @@ use Framework\View\Extension\AppExtension;
 use Framework\View\Extension\AssetExtension;
 use Framework\View\Extension\PathExtension;
 use Framework\View\Extension\UrlExtension;
+use Platform\View\Extension\FormExtension;
 use Platform\View\Extension\PageExtension;
 
 /* ////////////////////////////////////////////////////////////////////////////// */
@@ -18,6 +19,7 @@ return [
     'extensions' => [
         AppExtension::class,
         AssetExtension::class,
+        FormExtension::class,
         PageExtension::class,
         PathExtension::class,
         UrlExtension::class,

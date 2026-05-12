@@ -4,6 +4,7 @@ namespace Framework\Http\Request;
 
 use Framework\Http\Bag\FileBag;
 use Framework\Http\Bag\HeaderBag;
+use Framework\Http\Bag\InputBag;
 use Framework\Http\Bag\ParamBag;
 use Framework\Http\Session\Session;
 use Framework\Support\ValueObject;
@@ -20,7 +21,7 @@ class Request extends ValueObject
     public $body;
     /** @var FileBag */
     public $files;
-    /** @var ParamBag */
+    /** @var InputBag */
     public $input;
     /** @var ParamBag */
     public $cookies;
@@ -49,11 +50,11 @@ class Request extends ValueObject
         $this->query = new ParamBag($query);
         $this->body = new ParamBag($body);
         $this->files = new FileBag($files);
-        $this->input = new ParamBag(array_merge(
-            $this->query->all(),
-            $this->body->all(),
-            $this->files->all()
-        ));
+        $this->input = new InputBag(
+            $this->query,
+            $this->body,
+            $this->files
+        );
         $this->cookies = new ParamBag($cookies);
 
         $this->method = strtoupper($this->server->get('REQUEST_METHOD', 'GET'));
@@ -64,22 +65,6 @@ class Request extends ValueObject
     public function setSession(Session $session): void
     {
         $this->session = $session;
-    }
-
-    public function isSecure(): bool
-    {
-        return $this->getScheme() === 'https';
-    }
-
-    public function isXmlHttpRequest(): bool
-    {
-        $header = $this->server->get('HTTP_X_REQUESTED_WITH');
-
-        if (!$header) {
-            return false;
-        }
-
-        return in_array(strtolower($header), ['fetch', 'xmlhttprequest']);
     }
 
     public function getScheme(): string
@@ -137,6 +122,22 @@ class Request extends ValueObject
         return $this->getBaseUrl() . '/' . ltrim($path, '/');
     }
 
+    public function isSecure(): bool
+    {
+        return $this->getScheme() === 'https';
+    }
+
+    public function isXmlHttpRequest(): bool
+    {
+        $header = $this->server->get('HTTP_X_REQUESTED_WITH');
+
+        if (!$header) {
+            return false;
+        }
+
+        return in_array(strtolower($header), ['fetch', 'xmlhttprequest']);
+    }
+
     /**
      * @param mixed $default
      * @return mixed
@@ -146,8 +147,11 @@ class Request extends ValueObject
         return $this->attributes[$name] ?? $default;
     }
 
-    /** @param mixed $value */
-    public function withAttribute(string $key, $value): self
+    /**
+     * @param mixed $value
+     * @return static
+     */
+    public function withAttribute(string $key, $value)
     {
         $clone = clone $this;
         $clone->attributes[$key] = $value;
@@ -155,7 +159,8 @@ class Request extends ValueObject
         return $clone;
     }
 
-    public function withAttributes(array $attributes): self
+    /** @return static */
+    public function withAttributes(array $attributes)
     {
         $clone = clone $this;
 

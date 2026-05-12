@@ -43,8 +43,11 @@ class Query extends ValueObject
         $this->database = $database;
     }
 
-    /** @param array|string $columns */
-    public function select($columns = ['*']): self
+    /**
+     * @param array|string $columns
+     * @return static
+     */
+    public function select($columns = ['*'])
     {
         $this->reset();
         $this->type = 'select';
@@ -53,7 +56,8 @@ class Query extends ValueObject
         return $this;
     }
 
-    public function count(string $column = '*'): self
+    /** @return static */
+    public function count(string $column = '*')
     {
         $this->reset();
         $this->type = 'count';
@@ -62,7 +66,8 @@ class Query extends ValueObject
         return $this;
     }
 
-    public function insert(string $table): self
+    /** @return static */
+    public function insert(string $table)
     {
         $this->reset();
         $this->type = 'insert';
@@ -71,7 +76,8 @@ class Query extends ValueObject
         return $this;
     }
 
-    public function update(string $table): self
+    /** @return static */
+    public function update(string $table)
     {
         $this->reset();
         $this->type = 'update';
@@ -80,7 +86,8 @@ class Query extends ValueObject
         return $this;
     }
 
-    public function delete(string $table): self
+    /** @return static */
+    public function delete(string $table)
     {
         $this->reset();
         $this->type = 'delete';
@@ -89,19 +96,22 @@ class Query extends ValueObject
         return $this;
     }
 
-    public function from(string $table): self
+    /** @return static */
+    public function from(string $table)
     {
         $this->table = $table;
         return $this;
     }
 
-    public function data(array $data): self
+    /** @return static */
+    public function data(array $data)
     {
         $this->data = array_merge($this->data, $data);
         return $this;
     }
 
-    public function where(array $wheres): self
+    /** @return static */
+    public function where(array $wheres)
     {
         foreach ($wheres as $key => $value) {
             $this->parseWhere($key, $value);
@@ -110,7 +120,8 @@ class Query extends ValueObject
         return $this;
     }
 
-    public function join(string $table, string $on, string $type = 'INNER'): self
+    /** @return static */
+    public function join(string $table, string $on, string $type = 'INNER')
     {
         $this->joins[] = [
             'type' => $type,
@@ -121,15 +132,21 @@ class Query extends ValueObject
         return $this;
     }
 
-    /** @param array|string $columns */
-    public function groupby($columns): self
+    /**
+     * @param array|string $columns
+     * @return static
+     */
+    public function groupby($columns)
     {
         $this->groupbys = array_merge($this->groupbys, (array) $columns);
         return $this;
     }
 
-    /** @param array|string $orders */
-    public function orderby($orders): self
+    /**
+     * @param array|string $orders
+     * @return static
+     */
+    public function orderby($orders)
     {
         foreach ((array) $orders as $key => $value) {
             $this->parseOrderby($key, $value);
@@ -138,25 +155,29 @@ class Query extends ValueObject
         return $this;
     }
 
-    public function limit(int $limit): self
+    /** @return static */
+    public function limit(int $limit)
     {
         $this->limit = $limit;
         return $this;
     }
 
-    public function offset(int $offset): self
+    /** @return static */
+    public function offset(int $offset)
     {
         $this->offset = $offset;
         return $this;
     }
 
-    public function before(callable $fn): self
+    /** @return static */
+    public function before(callable $fn)
     {
         $this->before[] = $fn;
         return $this;
     }
 
-    public function after(callable $fn): self
+    /** @return static */
+    public function after(callable $fn)
     {
         $this->after[] = $fn;
         return $this;

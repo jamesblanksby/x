@@ -46,7 +46,7 @@ class RequestDispatcher
             ));
         }
 
-        if ($result->route === null) {
+        if (!$result->route) {
             throw new NotFoundException("No route matched `{$path}`.");
         }
 

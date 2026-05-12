@@ -20,7 +20,7 @@ class FlashBag
     {
         $flashes = $this->session->get(self::KEY, []);
 
-        if ($type === null) {
+        if (!$type) {
             return !empty($flashes);
         }
 

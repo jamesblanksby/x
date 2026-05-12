@@ -5,6 +5,7 @@ namespace Platform\Module\Admin\Controller;
 use Framework\Http\Request\Request;
 use Framework\Http\Response\Response;
 use Platform\Controller\AdminController;
+use Platform\Module\Admin\Form\Auth\LoginForm;
 use Platform\Module\Admin\Service\AuthService;
 
 class AuthController extends AdminController
@@ -17,32 +18,34 @@ class AuthController extends AdminController
         $this->authService = $authService;
     }
 
-    public function login(): Response
+    public function login(Request $request): Response
     {
-        return $this->render('admin/template/login');
-    }
+        $form = $this->createForm(LoginForm::class);
+        $form->handleRequest($request);
 
-    public function authenticate(Request $request): Response
-    {
-        $input = $request->input->all();
+        if ($form->isSubmitted() && $form->isValid()) {
+            $email = $form->getValue('email');
+            $password = $form->getValue('password');
 
-        $email = $input['email'];
-        $password = $input['password'];
+            $success = $this->authService->authenticate($email, $password);
 
-        $success = $this->authService->authenticate($email, $password);
+            if (!$success) {
+                return $this->respond([
+                    'success' => false,
+                    'text' => 'Invalid login credentials',
+                ]);
+            }
 
-        if (!$success) {
+            $redirect = $request->query->get('redirect', $this->generateUrl('admin.page.index'));
+
             return $this->respond([
-                'success' => false,
-                'text' => 'Invalid login credentials',
+                'success' => true,
+                'redirect' => $redirect,
             ]);
         }
 
-        $redirect = $request->query->get('redirect', $this->generateUrl('admin.page.index'));
-
-        return $this->respond([
-            'success' => true,
-            'redirect' => $redirect,
+        return $this->render('admin/template/login', [
+            'form' => $form,
         ]);
     }
 
