@@ -2,14 +2,12 @@
 
 namespace Platform\Form;
 
-use Framework\Support\ValueObject;
 use Platform\Form\Element\ElementInterface;
 
-class FormBuilder extends ValueObject
+class FormBuilder
 {
     /** @var array */
-    public $fields = [];
-
+    private $fields = [];
     /** @var array */
     private $data = [];
 
@@ -42,6 +40,11 @@ class FormBuilder extends ValueObject
         $this->fields[$name] = $field;
 
         return $this;
+    }
+
+    public function getFields(): array
+    {
+        return $this->fields;
     }
 
     private function bindValue(string $name, ElementInterface $element): void

@@ -13,6 +13,6 @@ class FormFactory
         $builder = new FormBuilder($data);
         $type->buildForm($builder);
 
-        return new Form($builder->fields);
+        return new Form($builder->getFields());
     }
 }
