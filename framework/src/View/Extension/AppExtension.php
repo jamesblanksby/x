@@ -33,7 +33,7 @@ class AppExtension implements ExtensionInterface
         $view->addGlobal('app', [
             'debug' => $this->context->isDebug(),
             'environment' => $this->context->getEnvironment(),
-            'flash' => $session->flash,
+            'flash' => $session->getFlash(),
             'request' => $this->request,
             'session' => $session,
             'user' => $this->authenticator->user(),

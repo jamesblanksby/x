@@ -3,13 +3,11 @@
 namespace Framework\Http\Session;
 
 use Framework\Http\Bag\FlashBag;
-use Framework\Support\ValueObject;
 
-class Session extends ValueObject
+class Session
 {
     /** @var FlashBag */
-    public $flash;
-
+    private $flash;
     /** @var bool */
     private $started = false;
 
@@ -77,5 +75,10 @@ class Session extends ValueObject
     public function id(): string
     {
         return session_id();
+    }
+
+    public function getFlash(): FlashBag
+    {
+        return $this->flash;
     }
 }
