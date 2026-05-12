@@ -23,7 +23,7 @@ class RequestHandler
 
     public function handle(Request $request, Route $route): Response
     {
-        [$controller, $methodName] = $this->handlerResolver->resolve($route->handler);
+        [$controller, $methodName] = $this->handlerResolver->resolve($route->getHandler());
 
         $method = new \ReflectionMethod($controller, $methodName);
         $args = $this->parameterResolver->resolveMethodArgs($method, $request);

@@ -18,7 +18,7 @@ class RouteCollection
         $routes = [];
 
         foreach ($this->routes as $route) {
-            if ($route->method === $method) {
+            if ($route->getMethod() === $method) {
                 $routes[] = $route;
             }
         }
@@ -29,7 +29,7 @@ class RouteCollection
     public function byName(string $name): Route
     {
         foreach ($this->routes as $route) {
-            if ($route->name === $name) {
+            if ($route->getName() === $name) {
                 return $route;
             }
         }

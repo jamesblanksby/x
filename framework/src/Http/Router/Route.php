@@ -2,26 +2,24 @@
 
 namespace Framework\Http\Router;
 
-use Framework\Support\ValueObject;
-
-class Route extends ValueObject
+class Route
 {
     /** @var string */
-    public $method;
+    private $method;
     /** @var string */
-    public $path;
+    private $path;
     /** @var string */
-    public $regex;
+    private $regex;
     /** @var array */
-    public $paramNames;
+    private $paramNames;
     /** @var array */
-    public $paramOptional;
+    private $paramOptional;
     /** @var string */
-    public $handler;
+    private $handler;
     /** @var string */
-    public $name;
+    private $name;
     /** @var array */
-    public $middleware;
+    private $middleware;
 
     public function __construct(
         string $method,
@@ -41,5 +39,45 @@ class Route extends ValueObject
         $this->handler = $handler;
         $this->name = $name;
         $this->middleware = $middleware;
+    }
+
+    public function getMethod(): string
+    {
+        return $this->method;
+    }
+
+    public function getPath(): string
+    {
+        return $this->path;
+    }
+
+    public function getRegex(): string
+    {
+        return $this->regex;
+    }
+
+    public function getParamNames(): array
+    {
+        return $this->paramNames;
+    }
+
+    public function getParamOptional(): array
+    {
+        return $this->paramOptional;
+    }
+
+    public function getHandler(): string
+    {
+        return $this->handler;
+    }
+
+    public function getName(): string
+    {
+        return $this->name;
+    }
+
+    public function getMiddleware(): array
+    {
+        return $this->middleware;
     }
 }

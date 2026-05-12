@@ -49,7 +49,7 @@ class UrlGenerator
                     return '';
                 }
 
-                throw new \RuntimeException("Missing required parameter `{$name}` for route `{$route->name}`.");
+                throw new \RuntimeException("Missing required parameter `{$name}` for route `{$route->getName()}`.");
             }
 
             $used[] = $name;
@@ -57,7 +57,7 @@ class UrlGenerator
             return (string) $params[$name];
         };
 
-        return preg_replace_callback(self::PARAM_REGEX, $callback, $route->path);
+        return preg_replace_callback(self::PARAM_REGEX, $callback, $route->getPath());
     }
 
     private function appendQueryString(string $path, array $params, array $used): string

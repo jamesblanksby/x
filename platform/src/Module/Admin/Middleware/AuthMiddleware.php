@@ -59,6 +59,6 @@ class AuthMiddleware implements MiddlewareInterface
             return false;
         }
 
-        return !in_array($route->name, self::PUBLIC_ROUTES);
+        return !in_array($route->getName(), self::PUBLIC_ROUTES);
     }
 }

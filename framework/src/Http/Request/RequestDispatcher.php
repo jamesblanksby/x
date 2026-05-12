@@ -59,7 +59,7 @@ class RequestDispatcher
             return $this->requestHandler->handle($request, $route);
         };
 
-        $middleware = array_merge($this->middleware, $route->middleware);
+        $middleware = array_merge($this->middleware, $route->getMiddleware());
 
         $pipeline = array_reduce(array_reverse($middleware), function (callable $next, string $middlewareClass) {
             return function (Request $request) use ($next, $middlewareClass): Response {

@@ -20,14 +20,14 @@ class RouteMatcher
         }
 
         foreach ($collection->all() as $route) {
-            if ($route->method === $method) {
+            if ($route->getMethod() === $method) {
                 continue;
             }
 
             $params = $this->test($route, $path);
 
             if ($params !== null) {
-                $matches[] = $route->method;
+                $matches[] = $route->getMethod();
             }
         }
 
@@ -40,7 +40,7 @@ class RouteMatcher
 
     private function test(Route $route, string $path): ?array
     {
-        preg_match($route->regex, $path, $matches);
+        preg_match($route->getRegex(), $path, $matches);
 
         if (!$matches) {
             return null;
@@ -48,11 +48,11 @@ class RouteMatcher
 
         $params = [];
 
-        foreach ($route->paramNames as $a => $name) {
+        foreach ($route->getParamNames() as $a => $name) {
             $match = $matches[$name] ?? null;
             if ($match && $match !== '') {
                 $params[$name] = $match;
-            } elseif ($route->paramOptional[$a]) {
+            } elseif ($route->getParamOptional()[$a]) {
                 $params[$name] = null;
             }
         }
