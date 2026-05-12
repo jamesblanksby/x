@@ -2,17 +2,10 @@
 
 namespace Framework\Database;
 
-use Framework\Support\ValueObject;
-
-class Config extends ValueObject
+class Config
 {
     /** @var string */
-    public $driver;
-    /** @var ?string */
-    public $username;
-    /** @var ?string */
-    public $password;
-
+    private $driver;
     /** @var string */
     private $host;
     /** @var int */
@@ -21,29 +14,44 @@ class Config extends ValueObject
     private $database;
     /** @var string */
     private $charset;
+    /** @var ?string */
+    private $username;
+    /** @var ?string */
+    private $password;
 
     public function __construct(array $config = [])
     {
         $config = array_merge(self::defaults(), $config);
 
         $this->driver = $config['driver'];
-        $this->username = $config['username'];
-        $this->password = $config['password'];
         $this->host = $config['host'];
         $this->port = $config['port'];
         $this->database = $config['database'];
         $this->charset = $config['charset'];
+        $this->username = $config['username'];
+        $this->password = $config['password'];
     }
 
-    public function dsn(): string
+    public function getDsn(): string
     {
         return sprintf(
-            'mysql:host=%s;port=%d;dbname=%s;charset=%s',
+            '%s:host=%s;port=%d;dbname=%s;charset=%s',
+            $this->driver,
             $this->host,
             $this->port,
             $this->database,
             $this->charset
         );
+    }
+
+    public function getUsername(): ?string
+    {
+        return $this->username;
+    }
+
+    public function getPassword(): ?string
+    {
+        return $this->password;
     }
 
     private static function defaults(): array

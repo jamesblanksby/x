@@ -15,9 +15,9 @@ class Connection
     public static function create(Config $config): self
     {
         $pdo = new \PDO(
-            $config->dsn(),
-            $config->username,
-            $config->password
+            $config->getDsn(),
+            $config->getUsername(),
+            $config->getPassword()
         );
 
         $pdo->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
