@@ -2,7 +2,6 @@
 
 namespace Framework\Http\Request;
 
-use Framework\Container\Container;
 use Framework\Http\Exception\MethodNotAllowedException;
 use Framework\Http\Exception\NotFoundException;
 use Framework\Http\Response\Response;
@@ -11,33 +10,30 @@ use Framework\Http\Router\Router;
 
 class RequestDispatcher
 {
-    /** @var Container */
-    private $container;
-    /** @var RequestHandler */
-    private $requestHandler;
+    /** @var RequestExecutor */
+    private $executor;
     /** @var Router */
     private $router;
 
     public function __construct(
-        Container $container,
-        RequestHandler $requestHandler,
+        RequestExecutor $executor,
         Router $router
     ) {
-        $this->container = $container;
-        $this->requestHandler = $requestHandler;
+        $this->executor = $executor;
         $this->router = $router;
     }
 
     public function dispatch(Request $request): Response
     {
+        $method = $request->getMethod();
         $path = $request->getRelativePath();
 
-        $result = $this->router->match($request->getMethod(), $path);
+        $result = $this->router->match($method, $path);
 
         if (!$result->isAllowed()) {
             throw new MethodNotAllowedException(sprintf(
                 'Method `%s` not allowed. Allowed: %s.',
-                $request->getMethod(),
+                $method,
                 implode(', ', $result->getAllowed())
             ));
         }
@@ -46,24 +42,9 @@ class RequestDispatcher
             throw new NotFoundException("No route matched `{$path}`.");
         }
 
-        $request = $request->withAttribute(Route::class, $result->getRoute());
-        $request = $request->withAttributes($result->getParams());
+        $request = $request->addAttribute(Route::class, $result->getRoute());
+        $request = $request->addAttributes($result->getParams());
 
-        $route = $result->getRoute();
-
-        $core = function (Request $request) use ($route): Response {
-            return $this->requestHandler->handle($request, $route);
-        };
-
-        $middleware = array_reverse($route->getMiddleware());
-
-        $pipeline = array_reduce($middleware, function (callable $next, string $middlewareClass) {
-            return function (Request $request) use ($next, $middlewareClass): Response {
-                $middleware = $this->container->get($middlewareClass);
-                return $middleware->handle($request, $next);
-            };
-        }, $core);
-
-        return $pipeline($request);
+        return $this->executor->execute($request, $result->getRoute());
     }
 }

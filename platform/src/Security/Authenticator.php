@@ -26,14 +26,14 @@ class Authenticator implements AuthenticatorInterface
 
     public function authenticated(): bool
     {
-        return $this->user() !== null;
+        return !!$this->user();
     }
 
     public function user(): ?AuthenticatedUser
     {
         $id = $this->session->get(self::KEY);
 
-        if (!$id) {
+        if ($id === null) {
             return null;
         }
 
@@ -55,7 +55,8 @@ class Authenticator implements AuthenticatorInterface
     {
         $user = $this->userService->find($id);
 
-        if (!$user) {
+        if ($user === null) {
+            // @TODO exception ?
             return null;
         }
 

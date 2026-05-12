@@ -42,7 +42,7 @@ class PageExtension implements ExtensionInterface
 
     public function title(?array $page): string
     {
-        if (!$page) {
+        if ($page === null) {
             return $this->settings['page.site'];
         }
 

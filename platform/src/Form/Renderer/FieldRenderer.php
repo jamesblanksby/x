@@ -40,7 +40,7 @@ class FieldRenderer extends Renderer
     {
         $label = $this->field->getLabel();
 
-        if (!$label) {
+        if ($label === null) {
             return '';
         }
 
@@ -56,7 +56,7 @@ class FieldRenderer extends Renderer
     {
         $info = $this->field->getInfo();
 
-        if (!$info) {
+        if ($info === null) {
             return '';
         }
 
@@ -93,7 +93,7 @@ class FieldRenderer extends Renderer
     {
         $element = $this->field->getElement();
 
-        if (!$element) {
+        if ($element === null) {
             return '';
         }
 
@@ -114,7 +114,7 @@ class FieldRenderer extends Renderer
     {
         $element = $this->field->getElement();
 
-        if (!$element) {
+        if ($element === null) {
             return '';
         }
 

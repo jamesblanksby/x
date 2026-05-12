@@ -50,7 +50,7 @@ abstract class Kernel
 
     public function run(?Request $request = null): void
     {
-        if (!$request) {
+        if ($request === null) {
             $request = RequestFactory::createFromGlobals();
         }
 
@@ -94,7 +94,10 @@ abstract class Kernel
 
     private function registerServices(): void
     {
-        $providers = $this->serviceProviders();
+        $providers = [];
+        foreach ($this->serviceProviders() as $providerClass) {
+            $providers[] = $this->container->get($providerClass);
+        }
 
         usort($providers, function ($a, $b) {
             return $a->priority() <=> $b->priority();

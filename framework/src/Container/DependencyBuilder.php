@@ -30,7 +30,7 @@ class DependencyBuilder
     {
         $constructor = $class->getConstructor();
 
-        if (!$constructor) {
+        if ($constructor === null) {
             return [];
         }
 

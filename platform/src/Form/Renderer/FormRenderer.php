@@ -27,15 +27,9 @@ class FormRenderer extends Renderer
 
     public function open(): string
     {
-        // @TODO
-        $action = '';
-        $method = '';
-
-        $attribute = self::buildAttributes([
+        $attribute = self::buildAttributes(array_merge([
             'class' => 'form',
-            'action' => $action,
-            'method' => $method,
-        ]);
+        ], $this->form->getAttributes()));
 
         return "<x-form {$attribute}>";
     }

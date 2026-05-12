@@ -45,7 +45,7 @@ class AuthMiddleware implements MiddlewareInterface
         }
 
         if ($user) {
-            $request = $request->withAttribute(AuthenticatedUser::class, $user);
+            $request = $request->addAttribute(AuthenticatedUser::class, $user);
         }
 
         return $next($request);
@@ -55,7 +55,7 @@ class AuthMiddleware implements MiddlewareInterface
     {
         $route = $request->getAttribute(Route::class);
 
-        if (!$route) {
+        if ($route === null) {
             return false;
         }
 

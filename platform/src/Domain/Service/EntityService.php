@@ -47,7 +47,7 @@ abstract class EntityService
 
         $row = $this->repository->first($wheres);
 
-        if (!$row) {
+        if ($row === null) {
             throw new NotFoundException();
         }
 

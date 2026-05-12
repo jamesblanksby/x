@@ -57,7 +57,7 @@ class View
     {
         $section = array_pop($this->stack);
 
-        if (!$section) {
+        if ($section === null) {
             throw new \UnderflowException('Cannot end a section that has not been started.');
         }
 
@@ -109,7 +109,7 @@ class View
     {
         $function = $this->functions[$name] ?? null;
 
-        if (!$function) {
+        if ($function === null) {
             throw new \BadMethodCallException("Method `{$name}` does not exist.");
         }
 
@@ -160,7 +160,7 @@ class View
 
         $child = $this->sections[$name] ?? null;
 
-        if (!$child) {
+        if ($child === null) {
             $this->sections[$name] = new Section(
                 $name,
                 $section->shouldExtend(),

@@ -10,19 +10,18 @@ class Form
     /** @var array */
     private $fields;
     /** @var array */
-    private $options = [];
+    private $attributes = [];
     /** @var array */
     private $data = [];
     /** @var array */
     private $errors = [];
-
     /** @var bool */
     private $submitted = false;
 
-    public function __construct(array $fields, array $options = [])
+    public function __construct(array $fields, array $attributes = [])
     {
         $this->fields = $fields;
-        $this->options = $options;
+        $this->attributes = $attributes;
     }
 
     public function render(): string
@@ -49,9 +48,9 @@ class Form
         return $this->fields[$name] ?? null;
     }
 
-    public function getOptions(): array
+    public function getAttributes(): array
     {
-        return $this->options;
+        return $this->attributes;
     }
 
     /** @return mixed */
@@ -77,7 +76,7 @@ class Form
         foreach ($this->fields as $name => $field) {
             $element = $field->getElement();
 
-            if (!$element) {
+            if ($element === null) {
                 continue;
             }
 

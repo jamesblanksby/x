@@ -24,7 +24,7 @@ class AuthService
     {
         $user = $this->userService->find($email, 'email');
 
-        if (!$user || !password_verify($password, $user['password'])) {
+        if ($user === null || !password_verify($password, $user['password'])) {
             return false;
         }
 

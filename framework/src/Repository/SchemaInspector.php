@@ -11,7 +11,7 @@ class SchemaInspector
     /** @var string */
     private $table;
     /** @var ?array */
-    private $columns;
+    private $columns = null;
 
     public function __construct(Database $database, string $table)
     {

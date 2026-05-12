@@ -28,10 +28,10 @@ class Kernel extends FrameworkKernel
     protected function serviceProviders(): array
     {
         return array_merge(parent::serviceProviders(), [
-            new ConfigProvider(),
-            new DatabaseProvider(),
-            new RouteProvider(),
-            new ViewProvider(),
+            ConfigProvider::class,
+            DatabaseProvider::class,
+            RouteProvider::class,
+            ViewProvider::class,
         ]);
     }
 

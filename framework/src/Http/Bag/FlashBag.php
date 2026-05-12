@@ -20,11 +20,11 @@ class FlashBag
     {
         $flashes = $this->session->get(self::KEY, []);
 
-        if (!$type) {
-            return !empty($flashes);
+        if ($type !== null) {
+            $flashes = $flashes[$type];
         }
 
-        return !empty($flashes[$type]);
+        return !!$flashes;
     }
 
     /** @param mixed $message */

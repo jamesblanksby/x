@@ -27,7 +27,7 @@ class FormExtension implements ExtensionInterface
     {
         $field = $form->getField($name);
 
-        if (!$field) {
+        if ($field === null) {
             // @TODO exception
         }
 

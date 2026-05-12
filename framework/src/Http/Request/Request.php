@@ -6,7 +6,6 @@ use Framework\Http\Bag\FileBag;
 use Framework\Http\Bag\HeaderBag;
 use Framework\Http\Bag\InputBag;
 use Framework\Http\Bag\ParamBag;
-use Framework\Http\Session\Session;
 
 class Request
 {
@@ -24,8 +23,6 @@ class Request
     private $input;
     /** @var ParamBag */
     private $cookies;
-    /** @var ?Session */
-    private $session;
     /** @var string */
     private $method;
     /** @var string */
@@ -94,16 +91,6 @@ class Request
         return $this->cookies;
     }
 
-    public function getSession(): ?Session
-    {
-        return $this->session;
-    }
-
-    public function setSession(Session $session): void
-    {
-        $this->session = $session;
-    }
-
     public function getMethod(): string
     {
         return $this->method;
@@ -122,6 +109,7 @@ class Request
     public function getScheme(): string
     {
         $https = $this->server->get('HTTPS');
+
         return ($https && $https !== 'off') ? 'https' : 'http';
     }
 
@@ -187,38 +175,23 @@ class Request
         return $this->getScheme() === 'https';
     }
 
-    public function isXmlHttpRequest(): bool
+    /** @return static */
+    public function addAttributes(array $attributes)
     {
-        $header = $this->server->get('HTTP_X_REQUESTED_WITH');
-
-        if (!$header) {
-            return false;
+        foreach ($attributes as $key => $value) {
+            $this->addAttribute($key, $value);
         }
 
-        return in_array(strtolower($header), ['fetch', 'xmlhttprequest']);
+        return $this;
     }
 
     /**
      * @param mixed $value
      * @return static
      */
-    public function withAttribute(string $key, $value)
+    public function addAttribute(string $key, $value)
     {
-        $clone = clone $this;
-        $clone->attributes[$key] = $value;
-
-        return $clone;
-    }
-
-    /** @return static */
-    public function withAttributes(array $attributes)
-    {
-        $clone = clone $this;
-
-        foreach ($attributes as $key => $value) {
-            $clone->attributes[$key] = $value;
-        }
-
-        return $clone;
+        $this->attributes[$key] = $value;
+        return $this;
     }
 }
