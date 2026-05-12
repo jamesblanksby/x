@@ -2,16 +2,14 @@
 
 namespace Framework\View;
 
-use Framework\Support\ValueObject;
-
-class Section extends ValueObject
+class Section
 {
     /** @var string */
-    public $name;
+    private $name;
     /** @var bool  */
-    public $extend;
+    private $extend;
     /** @var string */
-    public $content;
+    private $content;
 
     public function __construct(string $name, bool $extend, string $content = '')
     {
@@ -27,5 +25,20 @@ class Section extends ValueObject
         } else {
             $this->content = $content;
         }
+    }
+
+    public function getName(): string
+    {
+        return $this->name;
+    }
+
+    public function getContent(): string
+    {
+        return $this->content;
+    }
+
+    public function shouldExtend(): bool
+    {
+        return $this->extend;
     }
 }

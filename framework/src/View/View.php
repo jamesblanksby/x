@@ -64,10 +64,9 @@ class View extends ValueObject
             throw new \UnderflowException('Cannot end a section that has not been started.');
         }
 
-        $name = $section->name;
         $content = $this->captureBuffer();
 
-        echo $this->resolveSectionContent($name, $content, $section);
+        echo $this->resolveSectionContent($section, $content);
     }
 
     public function include(string $template, array $data = []): void
@@ -149,21 +148,23 @@ class View extends ValueObject
         throw new \InvalidArgumentException("View `{$template}` not found.");
     }
 
-    private function resolveSectionContent(string $name, string $content, Section $section): string
+    private function resolveSectionContent(Section $section, string $content): string
     {
+        $name = $section->getName();
+
         $child = $this->sections[$name] ?? null;
 
         if (!$child) {
             $this->sections[$name] = new Section(
                 $name,
-                $section->extend,
+                $section->shouldExtend(),
                 $content
             );
 
             return $content;
         }
 
-        if ($child->extend) {
+        if ($child->shouldExtend()) {
             return $content . $child->content;
         }
 
