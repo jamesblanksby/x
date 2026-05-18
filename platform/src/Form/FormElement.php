@@ -58,14 +58,36 @@ class FormElement
         return $this->children;
     }
 
+    /** @param mixed $value */
+    public function setValue($value): void
+    {
+        $this->options['value'] = $value;
+    }
+
+    /** @return mixed */
+    public function getValue()
+    {
+        return $this->options['value'] ?? null;
+    }
+
     public function isValid(Form $form): bool
     {
         $validatorClass = $this->type->getValidatorClass();
 
-        if ($validatorClass === null) {
-            return true;
+        if ($validatorClass !== null) {
+            $valid = (new $validatorClass($form, $this))->validate();
+
+            if (!$valid) {
+                return false;
+            }
         }
 
-        return (new $validatorClass($form, $this))->validate();
+        foreach ($this->children as $child) {
+            if (!$child->isValid($form)) {
+                return false;
+            }
+        }
+
+        return true;
     }
 }

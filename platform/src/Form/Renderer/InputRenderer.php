@@ -27,13 +27,13 @@ class InputRenderer extends FieldRenderer
             'name' => $this->element->getName(),
             'value' => $this->element->getOption('value'),
             'required' => $this->element->getOption('required'),
-        ], $this->element->getOption('attributes', [])));
+        ], $this->element->getOption('attributes')));
 
         return "<input {$attribute}>";
     }
 
     private function resolveId(): string
     {
-        return $this->element->getOption('id') ?? $this->element->getName() ?? '';
+        return $this->element->getOption('id') ?? $this->element->getName();
     }
 }

@@ -8,9 +8,14 @@ abstract class FieldType extends Type
 {
     public function setDefaults(): array
     {
-        return [
+        return array_merge(parent::setDefaults(), [
+            'attributes' => [],
+            'class' => 'field',
+            'id' => null,
+            'info' => null,
+            'label' => null,
             'required' => true,
-        ];
+        ]);
     }
 
     public function getValidatorClass(): ?string

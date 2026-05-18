@@ -19,23 +19,25 @@ class FormFactory
         $this->requestContext = $requestContext;
     }
 
-    public function create(string $typeClass, array $options = []): Form
+    public function create(string $typeClass, array $data = [], array $options = []): Form
     {
         $type = $this->registry->resolve($typeClass);
         $options = array_merge($type->setDefaults(), $options);
 
-        $builder = new FormBuilder($this->registry);
-        $type->build($builder);
-
         if ($options['action'] === null) {
             $options['action'] = $this->requestContext->getRequest()->getUrl();
         }
+
+        $builder = new FormBuilder($this->registry);
+        $type->build($builder);
 
         $form = new Form($type, $options);
 
         foreach ($builder->getChildren() as $child) {
             $form->addChild($child);
         }
+
+        $form->setData($data);
 
         return $form;
     }

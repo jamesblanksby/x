@@ -13,7 +13,9 @@ abstract class Type implements TypeInterface
 
     public function setDefaults(): array
     {
-        return [];
+        return [
+            'attributes' => [],
+        ];
     }
 
     public function getValidatorClass(): ?string

@@ -18,7 +18,8 @@ abstract class ElementRenderer extends Renderer
         $this->type = $element->getType();
     }
 
-    protected function resolveLabel(): string
+    /** @return string|bool */
+    protected function resolveLabel()
     {
         $label = $this->element->getOption('label');
 

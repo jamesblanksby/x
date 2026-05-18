@@ -35,7 +35,7 @@ class FormRenderer extends Renderer
             'class' => 'form',
             'action' => $this->form->getOption('action'),
             'method' => $this->form->getOption('method'),
-        ], $this->form->getOption('attributes', [])));
+        ], $this->form->getOption('attributes')));
 
         return "<x-form {$attribute}>";
     }
@@ -43,9 +43,18 @@ class FormRenderer extends Renderer
     public function content(): string
     {
         $html = '';
+
+        $attribute = self::buildAttributes([
+            'class' => 'content',
+        ]);
+
+        $html .= "<div {$attribute}>";
+
         foreach ($this->form->getChildren() as $child) {
             $html .= $child->render();
         }
+
+        $html .= '</div>';
 
         return $html;
     }

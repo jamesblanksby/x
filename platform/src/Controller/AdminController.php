@@ -37,8 +37,8 @@ abstract class AdminController extends Controller
         return $this->status($status);
     }
 
-    protected function createForm(string $type, array $options = []): Form
+    protected function createForm(string $type, array $data = [], array $options = []): Form
     {
-        return $this->container->get(FormFactory::class)->create($type, $options);
+        return $this->container->get(FormFactory::class)->create($type, $data, $options);
     }
 }

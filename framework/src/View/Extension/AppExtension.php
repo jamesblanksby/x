@@ -49,7 +49,7 @@ class AppExtension implements ExtensionInterface
         return $this->requestContext->getRequest();
     }
 
-    private function route(): Route
+    private function route(): ?Route
     {
         return $this->requestContext->getRouteMatch()->getRoute();
     }

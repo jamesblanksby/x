@@ -13,19 +13,19 @@ class Form
     private $options = [];
     /** @var array */
     private $children = [];
-    /** @var bool */
-    private $submitted = false;
+    /** @var array */
+    private $elements = [];
     /** @var array */
     private $data = [];
+    /** @var bool */
+    private $submitted = false;
 
     public function __construct(
         TypeInterface $type,
-        array $options = [],
-        array $children = []
+        array $options = []
     ) {
         $this->type = $type;
         $this->options = $options;
-        $this->children = $children;
     }
 
     public function render(): string
@@ -44,7 +44,7 @@ class Form
         }
 
         $this->submitted = true;
-        $this->data = $request->getInput();
+        $this->setData($request->getInput()->all());
     }
 
     public function getType(): TypeInterface
@@ -64,11 +64,25 @@ class Form
     public function addChild(FormElement $child): void
     {
         $this->children[] = $child;
+        $this->registerElement($child);
     }
 
     public function getChildren(): array
     {
         return $this->children;
+    }
+
+    public function setData(array $data): void
+    {
+        $this->data = $data;
+
+        foreach ($data as $name => $value) {
+            $element = $this->elements[$name] ?? null;
+
+            if ($element !== null) {
+                $element->setValue($value);
+            }
+        }
     }
 
     public function getData(): array
@@ -79,10 +93,10 @@ class Form
     /**
      * @param mixed $default
      * @return mixed
-     */
-    public function getValue(string $key, $default = null)
+    */
+    public function getValue(string $name, $default = null)
     {
-        return $this->data[$key] ?? $default;
+        return $this->data[$name] ?? $default;
     }
 
     public function isSubmitted(): bool
@@ -104,5 +118,14 @@ class Form
     public function __toString(): string
     {
         return $this->render();
+    }
+
+    private function registerElement(FormElement $element): void
+    {
+        $this->elements[$element->getName()] = $element;
+
+        foreach ($element->getChildren() as $child) {
+            $this->registerElement($child);
+        }
     }
 }

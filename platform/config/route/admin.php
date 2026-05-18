@@ -24,7 +24,17 @@ $page = [
 ];
 
 /* ----------------------------------------------------------------- PASSWORD --- */
-$password = [];
+$password = [
+    // GET
+    ['GET', '/password/{token}/insert', 'PasswordController::insert'],
+    ['GET', '/password/recover', 'PasswordController::recover'],
+    ['GET', '/password/{token}/update', 'PasswordController::update'],
+
+    // POST
+    ['POST', '/password/{token}/insert', 'PasswordController::insert'],
+    ['POST', '/password/recover', 'PasswordController::recover'],
+    ['POST', '/password/{token}/update', 'PasswordController::update'],
+];
 
 /* ------------------------------------------------------------------ SETTING --- */
 $setting = [];
@@ -33,8 +43,8 @@ $setting = [];
 $user = [
     // GET
     ['GET', '/user', 'UserController::list'],
-    ['GET', '/user/new', 'UserController::new'],
-    ['GET', '/user/{user:uuid}/edit', 'UserController::edit'],
+    ['GET', '/user/insert', 'UserController::insert'],
+    ['GET', '/user/{user:uuid}/update', 'UserController::update'],
 
     // POST
     ['POST', '/user/insert', 'UserController::insert'],

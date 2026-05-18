@@ -2,21 +2,19 @@
 
 namespace Platform\Form\Type;
 
-use Platform\Form\Renderer\FormRenderer;
+use Platform\Form\Renderer\ButtongroupRenderer;
 
-class FormType extends Type
+class ButtongroupType extends GroupType
 {
     public function setDefaults(): array
     {
         return array_merge(parent::setDefaults(), [
-            'class' => 'form',
-            'action' => null,
-            'method' => 'post',
+            'label' => false,
         ]);
     }
 
     public function getRendererClass(): string
     {
-        return FormRenderer::class;
+        return ButtongroupRenderer::class;
     }
 }

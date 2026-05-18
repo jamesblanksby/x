@@ -36,7 +36,7 @@ class Router
         return $this->matcher->match($method, $path, $this->collection);
     }
 
-    public function url(string $name, array $params = [], bool $absolute = false): string
+    public function url(string $name, array $params = [], bool $absolute = true): string
     {
         return $this->generator->generate($name, $params, $absolute);
     }

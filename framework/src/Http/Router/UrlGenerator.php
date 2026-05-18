@@ -21,7 +21,7 @@ class UrlGenerator
         $this->requestContext = $requestContext;
     }
 
-    public function generate(string $name, array $params = [], bool $absolute = false): string
+    public function generate(string $name, array $params = [], bool $absolute = true): string
     {
         $route = $this->collection->byName($name);
 

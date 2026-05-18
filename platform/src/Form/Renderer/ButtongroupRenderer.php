@@ -2,10 +2,10 @@
 
 namespace Platform\Form\Renderer;
 
-class FieldsetRenderer extends GroupRenderer
+class ButtongroupRenderer extends GroupRenderer
 {
     protected function groupClass(): string
     {
-        return 'fieldset';
+        return 'buttongroup';
     }
 }

@@ -2,21 +2,20 @@
 
 namespace Platform\Form\Type;
 
-use Platform\Form\Renderer\FormRenderer;
+use Platform\Form\Renderer\SubmitRenderer;
 
-class FormType extends Type
+class SubmitType extends Type
 {
     public function setDefaults(): array
     {
         return array_merge(parent::setDefaults(), [
-            'class' => 'form',
-            'action' => null,
-            'method' => 'post',
+            'label' => null,
+            'value' => null,
         ]);
     }
 
     public function getRendererClass(): string
     {
-        return FormRenderer::class;
+        return SubmitRenderer::class;
     }
 }

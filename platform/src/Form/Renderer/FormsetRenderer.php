@@ -2,14 +2,10 @@
 
 namespace Platform\Form\Renderer;
 
-class FormsetRenderer extends ContainerRenderer
+class FormsetRenderer extends GroupRenderer
 {
-    public function open(): string
+    protected function groupClass(): string
     {
-        $attribute = self::buildAttributes(array_merge([
-            'class' => 'formset',
-        ], $this->element->getOption('attributes', [])));
-
-        return "<div {$attribute}>";
+        return 'formset';
     }
 }

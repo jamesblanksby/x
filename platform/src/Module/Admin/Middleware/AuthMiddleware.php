@@ -21,8 +21,10 @@ class AuthMiddleware implements MiddlewareInterface
 
     private const PUBLIC_ROUTES = [
         'admin.auth.login',
-        'admin.auth.authenticate',
         'admin.auth.logout',
+        'admin.password.insert',
+        'admin.password.recover',
+        'admin.password.update',
     ];
 
     public function __construct(

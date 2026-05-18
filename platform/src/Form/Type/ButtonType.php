@@ -2,21 +2,20 @@
 
 namespace Platform\Form\Type;
 
-use Platform\Form\Renderer\FormRenderer;
+use Platform\Form\Renderer\ButtonRenderer;
 
-class FormType extends Type
+class ButtonType extends Type
 {
     public function setDefaults(): array
     {
         return array_merge(parent::setDefaults(), [
-            'class' => 'form',
-            'action' => null,
-            'method' => 'post',
+            'href' => null,
+            'label' => null,
         ]);
     }
 
     public function getRendererClass(): string
     {
-        return FormRenderer::class;
+        return ButtonRenderer::class;
     }
 }

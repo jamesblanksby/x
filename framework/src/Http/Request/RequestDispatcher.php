@@ -32,6 +32,7 @@ class RequestDispatcher
         $path = $request->getRelativePath();
 
         $result = $this->router->match($method, $path);
+        $this->context->setRouteMatch($result);
 
         if (!$result->isAllowed()) {
             throw new MethodNotAllowedException(sprintf(
@@ -44,8 +45,6 @@ class RequestDispatcher
         if (!$result->isMatched()) {
             throw new NotFoundException("No route matched `{$path}`.");
         }
-
-        $this->context->setRouteMatch($result);
 
         return $this->executor->execute($request, $result->getRoute());
     }

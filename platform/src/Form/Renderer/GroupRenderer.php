@@ -2,7 +2,7 @@
 
 namespace Platform\Form\Renderer;
 
-abstract class ContainerRenderer extends ElementRenderer
+abstract class GroupRenderer extends ElementRenderer
 {
     public function render(): string
     {
@@ -14,7 +14,14 @@ abstract class ContainerRenderer extends ElementRenderer
         return $html;
     }
 
-    abstract public function open(): string;
+    public function open(): string
+    {
+        $attribute = self::buildAttributes(array_merge([
+            'class' => $this->groupClass(),
+        ], $this->element->getOption('attributes')));
+
+        return "<div {$attribute}>";
+    }
 
     public function label(): string
     {
@@ -34,9 +41,18 @@ abstract class ContainerRenderer extends ElementRenderer
     public function content(): string
     {
         $html = '';
+
+        $attribute = self::buildAttributes([
+            'class' => 'content',
+        ]);
+
+        $html .= "<div {$attribute}>";
+
         foreach ($this->element->getChildren() as $child) {
             $html .= $child->render();
         }
+
+        $html .= '</div>';
 
         return $html;
     }
@@ -45,4 +61,6 @@ abstract class ContainerRenderer extends ElementRenderer
     {
         return '</div>';
     }
+
+    abstract protected function groupClass(): string;
 }

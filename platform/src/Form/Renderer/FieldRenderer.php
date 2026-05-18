@@ -7,7 +7,7 @@ abstract class FieldRenderer extends ElementRenderer
     protected function open(): string
     {
         $attribute = self::buildAttributes([
-            'class' => 'label',
+            'class' => 'field',
         ]);
 
         return "<x-field {$attribute}>";
@@ -80,6 +80,6 @@ abstract class FieldRenderer extends ElementRenderer
 
     private function resolveFor(): string
     {
-        return $this->element->getOption('id') ?? $this->element->getName() ?? '';
+        return $this->element->getOption('id') ?? $this->element->getName();
     }
 }
