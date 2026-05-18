@@ -5,7 +5,10 @@ namespace Framework\Core;
 use Framework\Container\Container;
 use Framework\Core\Exception\ExceptionHandler;
 use Framework\Core\Exception\ExceptionHandlerInterface;
+use Framework\Core\Provider\MiddlewareProvider;
+use Framework\Core\Provider\ViewProvider;
 use Framework\Http\Request\Request;
+use Framework\Http\Request\RequestContext;
 use Framework\Http\Request\RequestDispatcher;
 use Framework\Http\Request\RequestFactory;
 use Framework\Http\Response\Response;
@@ -14,8 +17,8 @@ abstract class Kernel
 {
     /** @var Container */
     protected $container;
-    /** @var Context */
-    protected $context;
+    /** @var KernelConfig */
+    protected $config;
     /** @var bool */
     protected $booted = false;
 
@@ -23,14 +26,14 @@ abstract class Kernel
     {
         $this->container = new Container();
 
-        $this->context = new Context(
+        $this->config = new KernelConfig(
             $this->resolveRoot(),
             $environment,
             $debug
         );
 
         $this->container->set(Container::class, $this->container);
-        $this->container->set(Context::class, $this->context);
+        $this->container->set(KernelConfig::class, $this->config);
     }
 
     /** @return static */
@@ -40,8 +43,8 @@ abstract class Kernel
             return $this;
         }
 
-        $this->registerServices();
         $this->registerExceptionHandler();
+        $this->registerServices();
 
         $this->booted = true;
 
@@ -50,17 +53,17 @@ abstract class Kernel
 
     public function run(?Request $request = null): void
     {
-        if ($request === null) {
-            $request = RequestFactory::createFromGlobals();
-        }
-
-        $this->container->set(Request::class, $request);
-
-        if (!$this->booted) {
-            $this->boot();
-        }
-
         try {
+            if (!$this->booted) {
+                $this->boot();
+            }
+
+            if ($request === null) {
+                $request = RequestFactory::createFromGlobals();
+            }
+
+            $this->container->get(RequestContext::class)->setRequest($request);
+
             $response = $this->dispatchHttp($request);
         } catch (\Throwable $e) {
             $response = $this->handleThrowable($e);
@@ -76,7 +79,10 @@ abstract class Kernel
 
     protected function serviceProviders(): array
     {
-        return [];
+        return [
+            MiddlewareProvider::class,
+            ViewProvider::class,
+        ];
     }
 
     protected function exceptionHandler(): ExceptionHandlerInterface
@@ -104,11 +110,11 @@ abstract class Kernel
         });
 
         foreach ($providers as $provider) {
-            $provider->register($this->container, $this->context);
+            $provider->register($this->container);
         }
 
         foreach ($providers as $provider) {
-            $provider->boot($this->container, $this->context);
+            $provider->boot($this->container);
         }
     }
 

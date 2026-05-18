@@ -1,5 +1,5 @@
 <?php $v->extend('site/layout'); ?>
 
-<?php $v->section('main'); ?>
+<?php $v->start('main'); ?>
 <?= d($page); ?>
-<?php $v->endsection(); ?>
+<?php $v->stop(); ?>

@@ -24,12 +24,18 @@ class Authenticator implements AuthenticatorInterface
         $this->userService = $userService;
     }
 
-    public function authenticated(): bool
+    public function login(int $id): void
     {
-        return !!$this->user();
+        $this->session->regenerate();
+        $this->session->set(self::KEY, $id);
     }
 
-    public function user(): ?AuthenticatedUser
+    public function logout(): void
+    {
+        $this->session->destroy();
+    }
+
+    public function getUser(): ?AuthenticatedUser
     {
         $id = $this->session->get(self::KEY);
 
@@ -40,15 +46,9 @@ class Authenticator implements AuthenticatorInterface
         return $this->resolveUser($id);
     }
 
-    public function login(int $id): void
+    public function isAuthenticated(): bool
     {
-        $this->session->regenerate();
-        $this->session->set(self::KEY, $id);
-    }
-
-    public function logout(): void
-    {
-        $this->session->destroy();
+        return !!$this->getUser();
     }
 
     private function resolveUser(int $id): ?AuthenticatedUser

@@ -1,21 +1,21 @@
 <?php $v->extend('site/base'); ?>
 
-<?php $v->section('head:style'); ?>
+<?php $v->start('head:style'); ?>
 <!-- style : site -->
 <link rel="stylesheet" href="<?= $v->asset('site/css/site.css'); ?>">
-<?php $v->endsection(); ?>
+<?php $v->stop(); ?>
 
-<?php $v->section('head:script'); ?>
+<?php $v->start('head:script'); ?>
 <!-- script : site -->
 <script defer src="<?= $v->asset('site/js/site.js'); ?>"></script>
-<?php $v->endsection(); ?>
+<?php $v->stop(); ?>
 
-<?php $v->section('before'); ?>
+<?php $v->start('before'); ?>
 <!-- header -->
-<?php $v->include('site/layout/header'); ?>
-<?php $v->endsection(); ?>
+<?= $v->include('site/layout/header'); ?>
+<?php $v->stop(); ?>
 
-<?php $v->section('after'); ?>
+<?php $v->start('after'); ?>
 <!-- footer -->
-<?php $v->include('site/layout/footer'); ?>
-<?php $v->endsection(); ?>
+<?= $v->include('site/layout/footer'); ?>
+<?php $v->stop(); ?>

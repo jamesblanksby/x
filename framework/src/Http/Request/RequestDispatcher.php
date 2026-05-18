@@ -5,20 +5,23 @@ namespace Framework\Http\Request;
 use Framework\Http\Exception\MethodNotAllowedException;
 use Framework\Http\Exception\NotFoundException;
 use Framework\Http\Response\Response;
-use Framework\Http\Router\Route;
 use Framework\Http\Router\Router;
 
 class RequestDispatcher
 {
+    /** @var RequestContext */
+    private $context;
     /** @var RequestExecutor */
     private $executor;
     /** @var Router */
     private $router;
 
     public function __construct(
+        RequestContext $context,
         RequestExecutor $executor,
         Router $router
     ) {
+        $this->context = $context;
         $this->executor = $executor;
         $this->router = $router;
     }
@@ -42,8 +45,7 @@ class RequestDispatcher
             throw new NotFoundException("No route matched `{$path}`.");
         }
 
-        $request = $request->addAttribute(Route::class, $result->getRoute());
-        $request = $request->addAttributes($result->getParams());
+        $this->context->setRouteMatch($result);
 
         return $this->executor->execute($request, $result->getRoute());
     }

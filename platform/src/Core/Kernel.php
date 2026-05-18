@@ -27,12 +27,12 @@ class Kernel extends FrameworkKernel
 
     protected function serviceProviders(): array
     {
-        return array_merge(parent::serviceProviders(), [
+        return array_merge([
             ConfigProvider::class,
             DatabaseProvider::class,
             RouteProvider::class,
             ViewProvider::class,
-        ]);
+        ], parent::serviceProviders());
     }
 
     private function detectEnvironment(): string

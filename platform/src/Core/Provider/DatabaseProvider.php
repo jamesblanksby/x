@@ -3,17 +3,16 @@
 namespace Platform\Core\Provider;
 
 use Framework\Container\Container;
-use Framework\Core\Context;
 use Framework\Core\Provider\ProviderInterface;
-use Framework\Database\Config;
+use Framework\Database\ConnectionConfig;
 
 class DatabaseProvider implements ProviderInterface
 {
-    public function register(Container $container, Context $context): void
+    public function register(Container $container): void
     {
         $database = $container->get('config.database');
 
-        $config = new Config([
+        $config = new ConnectionConfig([
             'driver' => $database['driver'],
             'host' => $database['host'],
             'database' => $database['name'],
@@ -22,12 +21,12 @@ class DatabaseProvider implements ProviderInterface
             'password' => $database['password'],
         ]);
 
-        $container->set(Config::class, $config);
+        $container->set(ConnectionConfig::class, $config);
     }
 
-    public function boot(Container $container, Context $context): void
+    public function boot(Container $container): void
     {
-        //
+        // no-op
     }
 
     public function priority(): int

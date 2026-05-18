@@ -1,43 +1,34 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-
     <?php /* meta */ ?>
-    <?php $v->section('head:meta'); ?>
-    <!-- charset -->
-    <meta charset="utf-8">
-    <!-- viewport -->
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-    <?php $v->endsection(); ?>
-
+    <?= $v->section('head:meta'); ?>
     <?php /* share */ ?>
-    <?php $v->section('head:share'); ?>
-    <?php $v->endsection(); ?>
-
+    <?= $v->section('head:share'); ?>
     <?php /* style */ ?>
-    <?php $v->section('head:style'); ?>
-    <?php $v->endsection(); ?>
-
+    <?= $v->section('head:style'); ?>
     <?php /* script */ ?>
-    <?php $v->section('head:script'); ?>
-    <?php $v->endsection(); ?>
-    
+    <?= $v->section('head:script'); ?>    
 </head>
 <body>
 
     <?php /* before */ ?>
-    <?php $v->section('before'); ?>
-    <?php $v->endsection(); ?>
+    <?= $v->section('before'); ?>
 
     <!-- main -->
     <main class="main">
-        <?php $v->section('main'); ?>
-        <?php $v->endsection(); ?>
+        <?= $v->section('main'); ?>
     </main>
 
     <?php /* after */ ?>
-    <?php $v->section('after'); ?>
-    <?php $v->endsection(); ?>
+    <?= $v->section('after'); ?>
 
 </body>
 </html>
+
+<?php $v->start('head:meta'); ?>
+<!-- charset -->
+<meta charset="utf-8">
+<!-- viewport -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<?php $v->stop(); ?>

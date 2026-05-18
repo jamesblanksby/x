@@ -170,11 +170,6 @@ class Request
         return $this->attributes[$name] ?? $default;
     }
 
-    public function isSecure(): bool
-    {
-        return $this->getScheme() === 'https';
-    }
-
     /** @return static */
     public function addAttributes(array $attributes)
     {
@@ -193,5 +188,42 @@ class Request
     {
         $this->attributes[$key] = $value;
         return $this;
+    }
+
+    public function isSecure(): bool
+    {
+        return $this->getScheme() === 'https';
+    }
+
+    public function isMethod(string $method): bool
+    {
+        return $this->getMethod() === strtoupper($method);
+    }
+
+    public function isPost(): bool
+    {
+        return $this->isMethod('POST');
+    }
+
+    public function isGet(): bool
+    {
+        return $this->isMethod('GET');
+    }
+
+    public function isPut(): bool
+    {
+        return $this->isMethod('PUT');
+    }
+
+    public function isDelete(): bool
+    {
+        return $this->isMethod('DELETE');
+    }
+
+    public function isJson(): bool
+    {
+        $accept = $this->headers->get('Accept', '');
+
+        return strpos($accept, 'application/json') !== false;
     }
 }

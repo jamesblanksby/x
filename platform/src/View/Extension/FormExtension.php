@@ -11,26 +11,10 @@ class FormExtension implements ExtensionInterface
     public function register(View $view): void
     {
         $view->addFunction('form', [$this, 'form']);
-        $view->addFunction('field', [$this, 'field']);
-
-        // @TODO
-        // form_open
-        // form_close
     }
 
-    public function form(Form $form): void
+    public function form(Form $form): string
     {
-        echo $form->render();
-    }
-
-    public function field(Form $form, string $name): void
-    {
-        $field = $form->getField($name);
-
-        if ($field === null) {
-            // @TODO exception
-        }
-
-        echo $field->render();
+        return $form->render();
     }
 }

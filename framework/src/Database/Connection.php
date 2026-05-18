@@ -7,23 +7,16 @@ class Connection
     /** @var \PDO */
     private $pdo;
 
-    public function __construct(\PDO $pdo)
+    public function __construct(ConnectionConfig $config)
     {
-        $this->pdo = $pdo;
-    }
-
-    public static function create(Config $config): self
-    {
-        $pdo = new \PDO(
+        $this->pdo = new \PDO(
             $config->getDsn(),
             $config->getUsername(),
             $config->getPassword()
         );
 
-        $pdo->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
-        $pdo->setAttribute(\PDO::ATTR_DEFAULT_FETCH_MODE, \PDO::FETCH_ASSOC);
-
-        return new self($pdo);
+        $this->pdo->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
+        $this->pdo->setAttribute(\PDO::ATTR_DEFAULT_FETCH_MODE, \PDO::FETCH_ASSOC);
     }
 
     public function execute(string $sql, array $params = []): \PDOStatement

@@ -2,8 +2,8 @@
 
 namespace Platform\Core\Exception;
 
-use Framework\Core\Context;
 use Framework\Core\Exception\ExceptionHandler as FrameworkExceptionHandler;
+use Framework\Core\KernelConfig;
 use Framework\Http\Exception\HttpException;
 use Framework\Http\Response\Response;
 use Framework\View\View;
@@ -14,10 +14,10 @@ class ExceptionHandler extends FrameworkExceptionHandler
     protected $view;
 
     public function __construct(
-        Context $context,
+        KernelConfig $config,
         View $view
     ) {
-        parent::__construct($context);
+        parent::__construct($config);
 
         $this->view = $view;
     }
@@ -29,7 +29,7 @@ class ExceptionHandler extends FrameworkExceptionHandler
 
     protected function handleException(\Throwable $e): Response
     {
-        if ($this->context->isDebug()) {
+        if ($this->config->isDebug()) {
             return parent::handleException($e);
         }
 

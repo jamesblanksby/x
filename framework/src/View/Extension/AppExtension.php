@@ -2,42 +2,60 @@
 
 namespace Framework\View\Extension;
 
-use Framework\Core\Context;
+use Framework\Core\KernelConfig;
+use Framework\Http\Bag\FlashBag;
 use Framework\Http\Request\Request;
+use Framework\Http\Request\RequestContext;
+use Framework\Http\Router\Route;
+use Framework\Http\Session\Session;
 use Framework\View\View;
-use Platform\Security\Authenticator;
 
 class AppExtension implements ExtensionInterface
 {
-    /** @var Authenticator */
-    private $authenticator;
-    /** @var Context */
-    private $context;
-    /** @var Request */
-    private $request;
+    /** @var KernelConfig */
+    private $kernelConfig;
+    /** @var RequestContext */
+    private $requestContext;
 
     public function __construct(
-        Authenticator $authenticator,
-        Context $context,
-        Request $request
+        KernelConfig $kernelConfig,
+        RequestContext $requestContext
     ) {
-        $this->authenticator = $authenticator;
-        $this->context = $context;
-        $this->request = $request;
+        $this->kernelConfig = $kernelConfig;
+        $this->requestContext = $requestContext;
     }
 
     public function register(View $view): void
     {
-        // @TODO
-        // $session = $this->request->getSession();
+        $view->addGlobal('app', function () {
+            return [
+                'debug' => $this->kernelConfig->isDebug(),
+                'environment' => $this->kernelConfig->getEnvironment(),
+                'request' => $this->request(),
+                'route' => $this->route(),
+                'session' => $this->session(),
+                'flash' => $this->flash(),
+            ];
+        });
+    }
 
-        $view->addGlobal('app', [
-            'debug' => $this->context->isDebug(),
-            'environment' => $this->context->getEnvironment(),
-            // 'flash' => $session->getFlash(),
-            'request' => $this->request,
-            // 'session' => $session,
-            'user' => $this->authenticator->user(),
-        ]);
+    private function flash(): FlashBag
+    {
+        return $this->requestContext->getSession()->getFlash();
+    }
+
+    private function request(): Request
+    {
+        return $this->requestContext->getRequest();
+    }
+
+    private function route(): Route
+    {
+        return $this->requestContext->getRouteMatch()->getRoute();
+    }
+
+    private function session(): Session
+    {
+        return $this->requestContext->getSession();
     }
 }

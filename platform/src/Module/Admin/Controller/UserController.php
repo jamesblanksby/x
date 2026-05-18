@@ -34,7 +34,7 @@ class UserController extends AdminController
 
         return $this->respond([
             'success' => true,
-            'text' => 'User successfully deleted',
+            'message' => 'User successfully deleted',
             'reload' => true,
         ]);
     }

@@ -5,7 +5,7 @@ namespace Platform\Module\Admin\Controller;
 use Framework\Http\Request\Request;
 use Framework\Http\Response\Response;
 use Platform\Controller\AdminController;
-use Platform\Module\Admin\Form\Auth\LoginForm;
+use Platform\Module\Admin\Form\Type\LoginType;
 use Platform\Module\Admin\Service\AuthService;
 
 class AuthController extends AdminController
@@ -20,7 +20,8 @@ class AuthController extends AdminController
 
     public function login(Request $request): Response
     {
-        $form = $this->createForm(LoginForm::class);
+        $form = $this->createForm(LoginType::class);
+
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -32,7 +33,7 @@ class AuthController extends AdminController
             if (!$success) {
                 return $this->respond([
                     'success' => false,
-                    'text' => 'Invalid login credentials',
+                    'message' => 'Invalid login credentials',
                 ]);
             }
 

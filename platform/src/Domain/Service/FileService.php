@@ -2,25 +2,25 @@
 
 namespace Platform\Domain\Service;
 
-use Framework\Core\Context;
+use Framework\Core\KernelConfig;
 use Framework\Http\Router\UrlGenerator;
 use Platform\Domain\Repository\FileRepository;
 
 class FileService extends EntityService
 {
-    /** @var Context */
-    private $context;
+    /** @var KernelConfig */
+    private $kernelConfig;
     /** @var UrlGenerator */
     private $urlGenerator;
 
     public function __construct(
-        Context $context,
+        KernelConfig $kernelConfig,
         FileRepository $fileRepository,
         UrlGenerator $urlGenerator
     ) {
         parent::__construct($fileRepository);
 
-        $this->context = $context;
+        $this->kernelConfig = $kernelConfig;
         $this->urlGenerator = $urlGenerator;
     }
 
@@ -36,7 +36,7 @@ class FileService extends EntityService
     {
         $path = 'lib/file/' . $file['id'] . '.' . $file['extension'];
 
-        return $this->context->path($path);
+        return $this->kernelConfig->path($path);
     }
 
     private function url(array $file): string

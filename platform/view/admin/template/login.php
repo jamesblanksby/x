@@ -1,5 +1,5 @@
 <?php $v->extend('admin/layout'); ?>
 
-<?php $v->section('main'); ?>
-<?php $v->form($form); ?>
-<?php $v->endsection(); ?>
+<?php $v->start('main'); ?>
+<?= $v->form($form); ?>
+<?php $v->stop(); ?>

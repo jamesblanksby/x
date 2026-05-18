@@ -31,7 +31,7 @@ class Router
         $this->collection->add($route);
     }
 
-    public function match(string $method, string $path): MatchResult
+    public function match(string $method, string $path): RouteMatch
     {
         return $this->matcher->match($method, $path, $this->collection);
     }

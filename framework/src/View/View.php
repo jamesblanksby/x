@@ -21,11 +21,6 @@ class View
     /** @var array */
     private $sections = [];
 
-    public function __construct(array $options = [])
-    {
-        $this->options = $options;
-    }
-
     public function render(string $template, array $data = []): string
     {
         $output = $this->renderTemplate($template, $data);
@@ -47,13 +42,13 @@ class View
         return $this;
     }
 
-    public function section(string $name, bool $extend = true): void
+    public function start(string $name, bool $extend = true): void
     {
         $this->stack[] = new Section($name, $extend);
         $this->startBuffer();
     }
 
-    public function endsection(): void
+    public function stop(): void
     {
         $section = array_pop($this->stack);
 
@@ -61,17 +56,44 @@ class View
             throw new \UnderflowException('Cannot end a section that has not been started.');
         }
 
+        $name = $section->getName();
         $content = $this->captureBuffer();
 
-        echo $this->resolveSectionContent($section, $content);
+        $parent = $this->sections[$name] ?? null;
+
+        if ($parent !== null) {
+            $content = $parent->shouldExtend() ? $content . $parent->getContent() : $parent->getContent();
+        }
+
+        $this->sections[$name] = new Section(
+            $name,
+            $section->shouldExtend(),
+            $content
+        );
     }
 
-    public function include(string $template, array $data = []): void
+    public function section(string $name, string $default = ''): string
+    {
+        $section = $this->sections[$name] ?? null;
+
+        if ($section === null) {
+            return $default;
+        }
+
+        return $section->getContent();
+    }
+
+    public function include(string $template, array $data = []): string
     {
         $clone = clone $this;
         $clone->layout = null;
 
-        echo $clone->render($template, $data);
+        return $clone->render($template, $data);
+    }
+
+    public function setOptions(array $options): void
+    {
+        $this->options = $options;
     }
 
     /**
@@ -118,17 +140,15 @@ class View
 
     private function renderTemplate(string $template, array $data): string
     {
-        $path = $this->resolvePath($template);
+        $data = $this->resolveData($data);
+        extract($data);
 
         $v = $this;
-
-        $data = array_merge($this->globals, $data);
-        extract($data);
 
         $this->startBuffer();
 
         try {
-            require $path;
+            require $this->resolvePath($template);
         } catch (\Throwable $e) {
             $this->discardBuffer();
             throw $e;
@@ -154,27 +174,11 @@ class View
         throw new \InvalidArgumentException("View `{$template}` not found.");
     }
 
-    private function resolveSectionContent(Section $section, string $content): string
+    private function resolveData(array $data): array
     {
-        $name = $section->getName();
-
-        $child = $this->sections[$name] ?? null;
-
-        if ($child === null) {
-            $this->sections[$name] = new Section(
-                $name,
-                $section->shouldExtend(),
-                $content
-            );
-
-            return $content;
-        }
-
-        if ($child->shouldExtend()) {
-            return $content . $child->getContent();
-        }
-
-        return $child->getContent();
+        return array_map(function ($value) {
+            return $value instanceof \Closure ? $value() : $value;
+        }, array_merge($this->globals, $data));
     }
 
     private function startBuffer(): void

@@ -2,21 +2,21 @@
 
 namespace Platform\Domain\Service;
 
-use Framework\Http\Request\Request;
+use Framework\Http\Request\RequestContext;
 use Platform\Domain\Repository\PageRepository;
 
 class PageService extends EntityService
 {
-    /** @var Request */
-    private $request;
+    /** @var RequestContext */
+    private $requestContext;
 
     public function __construct(
         PageRepository $pageRepository,
-        Request $request
+        RequestContext $requestContext
     ) {
         parent::__construct($pageRepository);
 
-        $this->request = $request;
+        $this->requestContext = $requestContext;
     }
 
     public function get($value, string $property = 'uid', array $context = []): array
@@ -47,10 +47,12 @@ class PageService extends EntityService
 
     private function url(array $page): string
     {
+        $request = $this->requestContext->getRequest();
+
         if ($page['slug'] === 'index') {
-            return $this->request->getUrl();
+            return $request->getUrl();
         }
 
-        return $this->request->getUrlForPath($page['slug']);
+        return $request->getUrlForPath($page['slug']);
     }
 }

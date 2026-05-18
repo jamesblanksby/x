@@ -4,7 +4,7 @@ namespace Framework\Http\Router;
 
 class RouteMatcher
 {
-    public function match(string $method, string $path, RouteCollection $collection): MatchResult
+    public function match(string $method, string $path, RouteCollection $collection): RouteMatch
     {
         $method = strtoupper($method);
         $path = '/' . ltrim(rawurldecode($path), '/');
@@ -15,7 +15,7 @@ class RouteMatcher
             $params = $this->test($route, $path);
 
             if ($params !== null) {
-                return MatchResult::found($route, $params);
+                return RouteMatch::found($route, $params);
             }
         }
 
@@ -32,10 +32,10 @@ class RouteMatcher
         }
 
         if (!$matches) {
-            return MatchResult::methodNotAllowed(array_unique($matches));
+            return RouteMatch::notAllowed(array_unique($matches));
         }
 
-        return MatchResult::notFound();
+        return RouteMatch::notFound();
     }
 
     private function test(Route $route, string $path): ?array

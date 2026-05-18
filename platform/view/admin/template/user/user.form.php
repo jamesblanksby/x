@@ -1,5 +1,5 @@
 <?php $v->extend('admin/layout'); ?>
 
-<?php $v->section('main'); ?>
+<?php $v->start('main'); ?>
 <!-- @TODO -->
-<?php $v->endsection(); ?>
+<?php $v->stop(); ?>

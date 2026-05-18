@@ -2,25 +2,25 @@
 
 namespace Framework\View\Extension;
 
-use Framework\Core\Context;
-use Framework\Http\Request\Request;
+use Framework\Core\KernelConfig;
+use Framework\Http\Request\RequestContext;
 use Framework\View\View;
 
 class AssetExtension implements ExtensionInterface
 {
-    /** @var Context */
-    private $context;
-    /** @var Request */
-    private $request;
+    /** @var KernelConfig */
+    private $kernelConfig;
+    /** @var RequestContext */
+    private $requestContext;
     /** @var View */
     private $view;
 
     public function __construct(
-        Context $context,
-        Request $request
+        KernelConfig $kernelConfig,
+        RequestContext $requestContext
     ) {
-        $this->context = $context;
-        $this->request = $request;
+        $this->kernelConfig = $kernelConfig;
+        $this->requestContext = $requestContext;
     }
 
     public function register(View $view): void
@@ -35,9 +35,9 @@ class AssetExtension implements ExtensionInterface
         $asset = trim($this->view->getOption('asset', ''), '/');
 
         $path = $asset . '/' . ltrim($path, '/');
-        $url = $this->request->getUrlForPath($path);
+        $url = $this->requestContext->getRequest()->getUrlForPath($path);
 
-        $path = $this->context->path($path);
+        $path = $this->kernelConfig->path($path);
 
         if (file_exists($path)) {
             $url .= '?v=' . substr(md5((string) filemtime($path)), 0, 8);

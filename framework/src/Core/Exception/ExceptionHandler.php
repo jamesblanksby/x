@@ -2,18 +2,18 @@
 
 namespace Framework\Core\Exception;
 
-use Framework\Core\Context;
+use Framework\Core\KernelConfig;
 use Framework\Http\Exception\HttpException;
 use Framework\Http\Response\Response;
 
 class ExceptionHandler implements ExceptionHandlerInterface
 {
-    /** @var Context */
-    protected $context;
+    /** @var KernelConfig */
+    protected $config;
 
-    public function __construct(Context $context)
+    public function __construct(KernelConfig $config)
     {
-        $this->context = $context;
+        $this->config = $config;
     }
 
     public function handle(\Throwable $e): Response
@@ -29,7 +29,7 @@ class ExceptionHandler implements ExceptionHandlerInterface
     {
         $status = $e->getStatus();
 
-        if ($this->context->isDebug()) {
+        if ($this->config->isDebug()) {
             return $this->debugResponse($e, $status);
         }
 
@@ -41,7 +41,7 @@ class ExceptionHandler implements ExceptionHandlerInterface
 
     protected function handleException(\Throwable $e): Response
     {
-        if ($this->context->isDebug()) {
+        if ($this->config->isDebug()) {
             return $this->debugResponse($e, 500);
         }
 

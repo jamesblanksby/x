@@ -3,6 +3,7 @@
 namespace Framework\Http\Request;
 
 use Framework\Container\Container;
+use Framework\Http\Middleware\MiddlewareStack;
 use Framework\Http\Middleware\Pipeline;
 use Framework\Http\Response\Response;
 use Framework\Http\Router\Route;
@@ -32,9 +33,14 @@ class RequestExecutor
             return $this->handler->handle($request, $route);
         };
 
+        $middlewareClasses = array_merge(
+            $this->container->get(MiddlewareStack::class)->all(),
+            $route->getMiddleware()
+        );
+
         $middleware = [];
-        foreach ($route->getMiddleware() as $class) {
-            $middleware[] = $this->container->get($class);
+        foreach ($middlewareClasses as $middlewareClass) {
+            $middleware[] = $this->container->get($middlewareClass);
         }
 
         return $this->pipeline->process(

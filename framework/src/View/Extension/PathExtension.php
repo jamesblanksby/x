@@ -2,17 +2,17 @@
 
 namespace Framework\View\Extension;
 
-use Framework\Core\Context;
+use Framework\Core\KernelConfig;
 use Framework\View\View;
 
 class PathExtension implements ExtensionInterface
 {
-    /** @var Context */
-    private $context;
+    /** @var KernelConfig */
+    private $kernelConfig;
 
-    public function __construct(Context $context)
+    public function __construct(KernelConfig $kernelConfig)
     {
-        $this->context = $context;
+        $this->kernelConfig = $kernelConfig;
     }
 
     public function register(View $view): void
@@ -22,6 +22,6 @@ class PathExtension implements ExtensionInterface
 
     public function path(string $path): string
     {
-        return $this->context->path($path);
+        return $this->kernelConfig->path($path);
     }
 }

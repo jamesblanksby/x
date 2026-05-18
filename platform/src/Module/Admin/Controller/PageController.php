@@ -42,7 +42,7 @@ class PageController extends AdminController
 
         return $this->respond([
             'success' => true,
-            'text' => 'Page successfully deleted',
+            'message' => 'Page successfully deleted',
             'reload' => true,
         ]);
     }

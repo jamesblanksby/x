@@ -3,18 +3,17 @@
 namespace Platform\Core\Provider;
 
 use Framework\Container\Container;
-use Framework\Core\Context;
 use Framework\Core\Provider\ProviderInterface;
 use Framework\Http\Router\Router;
 
 class RouteProvider implements ProviderInterface
 {
-    public function register(Container $container, Context $context): void
+    public function register(Container $container): void
     {
-        //
+        // no-op
     }
 
-    public function boot(Container $container, Context $context): void
+    public function boot(Container $container): void
     {
         $config = array_merge_recursive(
             require dirname(__DIR__, 3) . '/config/route.php',

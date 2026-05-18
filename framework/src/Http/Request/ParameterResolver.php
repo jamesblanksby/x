@@ -9,10 +9,15 @@ class ParameterResolver
 {
     /** @var Container */
     private $container;
+    /** @var RequestContext */
+    private $requestContext;
 
-    public function __construct(Container $container)
-    {
+    public function __construct(
+        Container $container,
+        RequestContext $requestContext
+    ) {
         $this->container = $container;
+        $this->requestContext = $requestContext;
     }
 
     public function resolveMethodArgs(\ReflectionMethod $method, Request $request): array
@@ -35,7 +40,8 @@ class ParameterResolver
             return $request;
         }
 
-        $attribute = $request->getAttribute($name);
+        $params = $this->requestContext->getRouteMatch()->getParams();
+        $attribute = $params[$name] ?? null;
 
         if ($attribute !== null) {
             return $this->castAttribute($attribute, $type);

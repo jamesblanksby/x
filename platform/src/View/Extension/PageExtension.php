@@ -2,7 +2,7 @@
 
 namespace Platform\View\Extension;
 
-use Framework\Http\Request\Request;
+use Framework\Http\Request\RequestContext;
 use Framework\View\Extension\AssetExtension;
 use Framework\View\Extension\ExtensionInterface;
 use Framework\View\View;
@@ -12,19 +12,21 @@ class PageExtension implements ExtensionInterface
 {
     /** @var AssetExtension */
     private $assetExtension;
-    /** @var Request */
-    private $request;
-    /** @var array */
-    private $settings;
+    /** @var RequestContext */
+    private $requestContext;
+    /** @var SettingService */
+    private $settingService;
+    /** @var ?array */
+    private $settings = null;
 
     public function __construct(
         AssetExtension $assetExtension,
-        Request $request,
+        RequestContext $requestContext,
         SettingService $settingService
     ) {
         $this->assetExtension = $assetExtension;
-        $this->request = $request;
-        $this->settings = $settingService->map();
+        $this->requestContext = $requestContext;
+        $this->settingService = $settingService;
     }
 
     public function register(View $view): void
@@ -37,20 +39,20 @@ class PageExtension implements ExtensionInterface
 
     public function url(?array $page): string
     {
-        return $page['url'] ?? $this->request->getUrl();
+        return $page['url'] ?? $this->requestContext->getRequest()->getUrl();
     }
 
     public function title(?array $page): string
     {
         if ($page === null) {
-            return $this->settings['page.site'];
+            return $this->getSetting('page.site');
         }
 
-        $title = $page['title'] ?? $this->settings['page.title'];
+        $title = $page['title'] ?? $this->getSetting('page.title');
 
         $placeholders = [
-            '{{SITE}}' => $this->settings['page.site'],
-            '{{DIVIDER}}' => $this->settings['page.divider'],
+            '{{SITE}}' => $this->getSetting('page.site'),
+            '{{DIVIDER}}' => $this->getSetting('page.divider'),
             '{{PAGE}}' => $page['name'],
         ];
 
@@ -59,7 +61,7 @@ class PageExtension implements ExtensionInterface
 
     public function description(?array $page): string
     {
-        return $page['description'] ?? $this->settings['page.description'];
+        return $page['description'] ?? $this->getSetting('page.description');
     }
 
     public function image(?array $page): string
@@ -67,5 +69,18 @@ class PageExtension implements ExtensionInterface
         $image = $page['images']['share']['variants']['large']['proxy'] ?? null;
 
         return $image ?? $this->assetExtension->asset('src/gfx/share.png');
+    }
+
+    /**
+     * @param mixed $default
+     * @return mixed
+     */
+    private function getSetting(string $key, $default = null)
+    {
+        if ($this->settings === null) {
+            $this->settings = $this->settingService->map();
+        }
+
+        return $this->settings[$key] ?? $default;
     }
 }

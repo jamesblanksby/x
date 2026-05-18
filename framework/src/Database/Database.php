@@ -4,32 +4,21 @@ namespace Framework\Database;
 
 class Database
 {
-    /** @var ?Connection */
-    private $connection = null;
-    /** @var Config */
-    private $config;
+    /** @var Connection */
+    private $connection;
 
-    public function __construct(Config $config)
+    public function __construct(Connection $connection)
     {
-        $this->config = $config;
-    }
-
-    public function connection(): Connection
-    {
-        if ($this->connection === null) {
-            $this->connection = Connection::create($this->config);
-        }
-
-        return $this->connection;
+        $this->connection = $connection;
     }
 
     public function execute(string $sql, array $params = []): \PDOStatement
     {
-        return $this->connection()->execute($sql, $params);
+        return $this->connection->execute($sql, $params);
     }
 
     public function insertId(): ?int
     {
-        return (int) $this->connection()->insertId();
+        return (int) $this->connection->insertId();
     }
 }

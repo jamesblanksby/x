@@ -4,19 +4,20 @@ namespace Platform\Module\Admin\Middleware;
 
 use Framework\Http\Middleware\MiddlewareInterface;
 use Framework\Http\Request\Request;
+use Framework\Http\Request\RequestContext;
 use Framework\Http\Response\RedirectResponse;
 use Framework\Http\Response\Response;
-use Framework\Http\Router\Route;
-use Framework\Http\Router\UrlGenerator;
-use Framework\Security\AuthenticatedUser;
+use Framework\Http\Router\Router;
 use Platform\Security\Authenticator;
 
 class AuthMiddleware implements MiddlewareInterface
 {
     /** @var Authenticator */
     private $authenticator;
-    /** @var UrlGenerator */
-    private $urlGenerator;
+    /** @var RequestContext */
+    private $requestContext;
+    /** @var Router */
+    private $router;
 
     private const PUBLIC_ROUTES = [
         'admin.auth.login',
@@ -26,34 +27,32 @@ class AuthMiddleware implements MiddlewareInterface
 
     public function __construct(
         Authenticator $authenticator,
-        UrlGenerator $urlGenerator
+        RequestContext $requestContext,
+        Router $router
     ) {
         $this->authenticator = $authenticator;
-        $this->urlGenerator = $urlGenerator;
+        $this->requestContext = $requestContext;
+        $this->router = $router;
     }
 
     public function handle(Request $request, callable $next): Response
     {
-        $user = $this->authenticator->user();
+        $user = $this->authenticator->getUser();
 
-        if ($this->requiresAuthentication($request) && !$user) {
-            $url = $this->urlGenerator->generate('admin.auth.login', [
+        if ($this->requiresAuthentication() && !$user) {
+            $url = $this->router->url('admin.auth.login', [
                 'redirect' => $request->getUrl(),
             ], true);
 
             return new RedirectResponse($url);
         }
 
-        if ($user) {
-            $request = $request->addAttribute(AuthenticatedUser::class, $user);
-        }
-
         return $next($request);
     }
 
-    private function requiresAuthentication(Request $request): bool
+    private function requiresAuthentication(): bool
     {
-        $route = $request->getAttribute(Route::class);
+        $route = $this->requestContext->getRouteMatch()->getRoute();
 
         if ($route === null) {
             return false;

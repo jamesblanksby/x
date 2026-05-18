@@ -2,24 +2,23 @@
 
 namespace Framework\Http\Router;
 
-use Framework\Container\Container;
-use Framework\Http\Request\Request;
+use Framework\Http\Request\RequestContext;
 
 class UrlGenerator
 {
     /** @var RouteCollection */
     private $collection;
-    /** @var Container */
-    private $container;
+    /** @var RequestContext */
+    private $requestContext;
 
     private const PARAM_REGEX = '/\{(\w+)(?::[^}]+)?\}(\?)?/';
 
     public function __construct(
         RouteCollection $collection,
-        Container $container
+        RequestContext $requestContext
     ) {
         $this->collection = $collection;
-        $this->container = $container;
+        $this->requestContext = $requestContext;
     }
 
     public function generate(string $name, array $params = [], bool $absolute = false): string
@@ -73,6 +72,6 @@ class UrlGenerator
 
     private function buildUrl(string $path): string
     {
-        return $this->container->get(Request::class)->getUrlForPath($path);
+        return $this->requestContext->getRequest()->getUrlForPath($path);
     }
 }
