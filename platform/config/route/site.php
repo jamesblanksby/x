@@ -6,9 +6,8 @@
 
 /* --------------------------------------------------------------------- PAGE --- */
 $page = [
-    // GET
-    ['GET', '/', 'PageController::index'],
-    ['GET', '/{page:slug}', 'PageController::detail'],
+    [['GET'], '/', 'PageController::index'],
+    [['GET'], '/{page:slug}', 'PageController::detail'],
 ];
 
 /* --------------------------------------------------------------------- SITE --- */

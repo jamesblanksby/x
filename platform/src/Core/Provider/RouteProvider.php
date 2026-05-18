@@ -39,16 +39,18 @@ class RouteProvider implements ProviderInterface
 
         foreach ($group['routes'] as $resource => $routes) {
             foreach ($routes as $route) {
-                [$method, $path, $handler] = $route;
+                [$methods, $path, $handler] = $route;
 
-                $this->registerRoute($router, [
-                    'method' => $method,
-                    'path' => $path,
-                    'handler' => $handler,
-                    'resource' => $resource,
-                    'scope' => $scope,
-                    'middleware' => $middleware,
-                ]);
+                foreach ($methods as $method) {
+                    $this->registerRoute($router, [
+                        'method' => $method,
+                        'path' => $path,
+                        'handler' => $handler,
+                        'resource' => $resource,
+                        'scope' => $scope,
+                        'middleware' => $middleware,
+                    ]);
+                }
             }
         }
     }

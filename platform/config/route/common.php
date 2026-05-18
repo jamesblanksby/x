@@ -6,14 +6,12 @@
 
 /* --------------------------------------------------------------------- FILE --- */
 $file = [
-    // GET
-    ['GET', '/file/{file}/{name:file}', 'FileController::content'],
+    [['GET'], '/file/{file}/{name:file}', 'FileController::content'],
 ];
 
 /* -------------------------------------------------------------------- IMAGE --- */
 $image = [
-    // GET
-    ['GET', '/image/{image}/{name:file}', 'ImageController::content'],
+    [['GET'], '/image/{image}/{name:file}', 'ImageController::content'],
 ];
 
 /* ------------------------------------------------------------------- COMMON --- */

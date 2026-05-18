@@ -39,7 +39,7 @@ class RequestFactory
 
     private static function parseBody(string $method, array $headers): array
     {
-        if (in_array($method, ['GET', 'HEAD', 'OPTIONS'])) {
+        if (in_array($method, [['GET'], 'HEAD', 'OPTIONS'])) {
             return [];
         }
 
