@@ -26,10 +26,7 @@ class RequestDispatcher
 
     public function dispatch(Request $request): Response
     {
-        $method = $request->getMethod();
-        $path = $request->getRelativePath();
-
-        $routeMatch = $this->router->match($method, $path);
+        $routeMatch = $this->router->match($request->getMethod(), $request->getRelativePath());
         $this->context->setRouteMatch($routeMatch);
 
         return $this->executor->execute($request, $routeMatch);

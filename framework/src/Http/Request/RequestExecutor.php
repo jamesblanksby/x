@@ -10,6 +10,7 @@ use Framework\Http\Middleware\Pipeline;
 use Framework\Http\Response\Response;
 use Framework\Http\Router\RouteMatch;
 
+// @TODO merge with dispatcher ?
 class RequestExecutor
 {
     /** @var Container */
@@ -32,19 +33,16 @@ class RequestExecutor
     public function execute(Request $request, RouteMatch $routeMatch): Response
     {
         $controller = function (Request $request) use ($routeMatch) {
-            $method = $request->getMethod();
-            $path = $request->getRelativePath();
-
             if (!$routeMatch->isAllowed()) {
                 throw new MethodNotAllowedException(sprintf(
                     'Method `%s` not allowed. Allowed: %s.',
-                    $method,
+                    $request->getMethod(),
                     implode(', ', $routeMatch->getAllowed())
                 ));
             }
 
             if (!$routeMatch->isMatched()) {
-                throw new NotFoundException("No route matched `{$path}`.");
+                throw new NotFoundException("No route matched `{$request->getRelativePath()}`.");
             }
 
             return $this->handler->handle($request, $routeMatch->getRoute());
