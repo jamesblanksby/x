@@ -2,9 +2,9 @@
 
 namespace Platform\Form\Type;
 
-use Platform\Form\Renderer\ButtongroupRenderer;
+use Platform\Form\Renderer\ButtonsetRenderer;
 
-class ButtongroupType extends GroupType
+class ButtonsetType extends GroupType
 {
     public function setDefaults(): array
     {
@@ -15,6 +15,6 @@ class ButtongroupType extends GroupType
 
     public function getRendererClass(): string
     {
-        return ButtongroupRenderer::class;
+        return ButtonsetRenderer::class;
     }
 }

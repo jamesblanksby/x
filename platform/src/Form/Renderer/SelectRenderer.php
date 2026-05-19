@@ -4,19 +4,8 @@ namespace Platform\Form\Renderer;
 
 class SelectRenderer extends FieldRenderer
 {
-    public function render(): string
+    public function widget(): string
     {
-        $html = '';
-
-        $html .= $this->open();
-        $html .= $this->label();
-
-        d('SELECT');
-
-        d('/SELECT');
-
-        $html .= $this->close();
-
-        return $html;
+        return ''; // @TODO
     }
 }

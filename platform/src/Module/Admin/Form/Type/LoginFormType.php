@@ -4,7 +4,7 @@ namespace Platform\Module\Admin\Form\Type;
 
 use Framework\Http\Router\Router;
 use Platform\Form\FormBuilder;
-use Platform\Form\Type\ButtongroupType;
+use Platform\Form\Type\ButtonsetType;
 use Platform\Form\Type\ButtonType;
 use Platform\Form\Type\EmailType;
 use Platform\Form\Type\FormsetType;
@@ -33,7 +33,7 @@ class LoginFormType extends FormType
                     ->add('password', PasswordType::class)
                 ;
             })
-            ->add('submit', ButtongroupType::class, [], function (FormBuilder $builder) {
+            ->add('submit', ButtonsetType::class, [], function (FormBuilder $builder) {
                 $builder
                     ->add('login', SubmitType::class)
                     ->add('password', ButtonType::class, [

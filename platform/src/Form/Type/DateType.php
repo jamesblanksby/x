@@ -28,7 +28,7 @@ class DateType extends FieldsetType
     {
         $months = [];
         for ($a = 1; $a <= 12; $a++) {
-            $months[$a] = \DateTime::createFromFormat('!m', $a)->format('F');
+            $months[$a] = \DateTime::createFromFormat('!m', (string) $a)->format('F');
         }
 
         return $months;

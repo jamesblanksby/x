@@ -24,8 +24,8 @@ class AuthController extends AdminController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            // $email = $form->getValue('email');
-            // $password = $form->getValue('password');
+            $email = $form->getValue('email');
+            $password = $form->getValue('password');
 
             $success = $this->authService->authenticate($email, $password);
 

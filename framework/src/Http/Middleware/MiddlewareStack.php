@@ -16,14 +16,4 @@ class MiddlewareStack
     {
         return $this->middleware;
     }
-
-    public function prepend(string $middleware): void
-    {
-        array_unshift($this->middleware, $middleware);
-    }
-
-    public function push(string $middleware): void
-    {
-        $this->middleware[] = $middleware;
-    }
 }

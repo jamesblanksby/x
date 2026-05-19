@@ -14,13 +14,12 @@ class FormBuilder
         $this->registry = $registry;
     }
 
-    /** @return static */
-    public function add(string $name, string $typeClass, array $options = [], ?callable $callback = null)
+    public function add(string $name, string $typeClass, array $options = [], ?callable $callback = null): self
     {
         $type = $this->registry->resolve($typeClass);
         $options = array_merge($type->setDefaults(), $options);
 
-        $builder = new static($this->registry);
+        $builder = new self($this->registry);
 
         if ($callback !== null) {
             $callback($builder);

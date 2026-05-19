@@ -37,7 +37,7 @@ class FormRenderer extends Renderer
             'method' => $this->form->getOption('method'),
         ], $this->form->getOption('attributes')));
 
-        return "<x-form {$attribute}>";
+        return "<form {$attribute}>"; // @TODO x-form
     }
 
     public function content(): string
@@ -61,6 +61,6 @@ class FormRenderer extends Renderer
 
     public function close(): string
     {
-        return '</x-form>';
+        return '</form>'; // @TODO x-form
     }
 }

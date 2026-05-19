@@ -2,7 +2,6 @@
 
 namespace Platform\Module\Admin\Controller;
 
-use Framework\Http\Exception\NotFoundException;
 use Framework\Http\Request\Request;
 use Framework\Http\Response\Response;
 use Platform\Controller\AdminController;
@@ -20,43 +19,55 @@ class PasswordController extends AdminController
         $this->passwordService = $passwordService;
     }
 
-    public function update(
-        Request $request,
-        string $token
-    ): Response {
-        $email = $request->getQuery()->get('email', '');
-
-        $success = $this->passwordService->validate($email, $token);
-
-        if (!$success) {
-            throw new NotFoundException();
-        }
-
-        $form = $this->createForm(PasswordFormType::class, [
-            'email' => $email,
-        ]);
-
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            // @TODO
-        }
-
-        return $this->render('admin/template/password/password.form', [
-            'form' => $form,
-        ]);
-    }
-
     public function recover(Request $request): Response
     {
         $form = $this->createForm(PasswordRecoverType::class);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            // @TODO
+            $email = $form->getValue('email');
+
+            $this->passwordService->recover($email);
+
+            $redirect = $request->getQuery()->get('redirect', $this->generateUrl('admin.page.index'));
+
+            return $this->respond([
+                'success' => true,
+                'redirect' => $redirect,
+            ]);
         }
 
         return $this->render('admin/template/password/password.recover', [
+            'form' => $form,
+        ]);
+    }
+
+    public function update(
+        Request $request,
+        string $token
+    ): Response {
+        $user = $this->passwordService->resolve($token);
+
+        $form = $this->createForm(PasswordFormType::class, [
+            'email' => $user['email'],
+        ]);
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $password = $form->getValue('password');
+
+            $this->passwordService->update($user['email'], $password);
+
+            $redirect = $request->getQuery()->get('redirect', $this->generateUrl('admin.page.index'));
+
+            return $this->respond([
+                'success' => true,
+                'redirect' => $redirect,
+            ]);
+        }
+
+        return $this->render('admin/template/password/password.form', [
             'form' => $form,
         ]);
     }

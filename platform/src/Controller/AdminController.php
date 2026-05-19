@@ -14,7 +14,7 @@ abstract class AdminController extends Controller
     {
         $request = $this->container->get(RequestContext::class)->getRequest();
 
-        $success = filter_var($data['success'] ?? true, FILTER_VALIDATE_BOOL);
+        $success = $data['success'] ?? true;
         $status = $success ? 200 : 400;
 
         if ($request->isJson()) {

@@ -21,22 +21,19 @@ class RouteMatch
         $this->allowed = $allowed;
     }
 
-    /** @return static */
-    public static function found(Route $route, array $params)
+    public static function found(Route $route, array $params): self
     {
-        return new static($route, $params);
+        return new self($route, $params);
     }
 
-    /** @return static */
-    public static function notAllowed(array $allowed)
+    public static function notAllowed(array $allowed): self
     {
-        return new static(null, [], $allowed);
+        return new self(null, [], $allowed);
     }
 
-    /** @return static */
-    public static function notFound()
+    public static function notFound(): self
     {
-        return new static();
+        return new self();
     }
 
     public function getRoute(): ?Route

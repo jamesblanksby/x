@@ -145,15 +145,15 @@ class Request
 
     public function getUrl(): string
     {
-        $uri = $this->getSchemeAndHost() . $this->uri;
+        $url = $this->getSchemeAndHost() . $this->getPath();
 
         $queryString = $this->getQueryString();
 
         if ($queryString) {
-            $uri .= '?' . $queryString;
+            $url .= '?' . $queryString;
         }
 
-        return $uri;
+        return $url;
     }
 
     public function getUrlForPath(string $path): string

@@ -2,6 +2,7 @@
 
 namespace Platform\Module\Admin\Service;
 
+use Framework\Http\Exception\NotFoundException;
 use Platform\Domain\Service\UserService;
 
 class PasswordService
@@ -14,14 +15,24 @@ class PasswordService
         $this->userService = $userService;
     }
 
-    public function validate(string $email, string $token): bool
+    public function resolve(string $token): array
     {
-        $user = $this->userService->find($email, 'email');
+        $user = $this->userService->find($token, 'token');
 
-        return $user && $user['token'] === $token;
+        if (!$user) {
+            throw new NotFoundException();
+        }
+
+        return $user;
     }
 
-    // public function recover() // @TODO
+    public function recover(string $email): void
+    {
+        // @TODO
+    }
 
-    // public function update() // @TODO
+    public function update(string $email, string $password): void
+    {
+        // @TODO
+    }
 }
