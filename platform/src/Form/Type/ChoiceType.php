@@ -2,20 +2,19 @@
 
 namespace Platform\Form\Type;
 
-use Platform\Form\Renderer\SelectRenderer;
+use Platform\Form\Renderer\ChoiceRenderer;
 
-class SelectType extends FieldType
+abstract class ChoiceType extends FieldType
 {
     public function setDefaults(): array
     {
         return array_merge(parent::setDefaults(), [
-            'placeholder' => null,
-            'options' => [],
+            'choices' => [],
         ]);
     }
 
     public function getRendererClass(): string
     {
-        return SelectRenderer::class;
+        return ChoiceRenderer::class;
     }
 }

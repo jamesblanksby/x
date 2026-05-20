@@ -8,8 +8,8 @@ class ButtonRenderer extends ElementRenderer
     {
         $attribute = self::buildAttributes(array_merge([
             'class' => 'button',
-            'href' => $this->element->getOption('href'),
-        ], $this->element->getOption('attributes')));
+            'href' => $this->getOption('href'),
+        ], $this->getOption('attributes')));
 
         $label = $this->resolveLabel() ?: $this->element->getName();
 

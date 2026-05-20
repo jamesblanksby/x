@@ -6,6 +6,6 @@ class ButtonsetRenderer extends GroupRenderer
 {
     protected function groupClass(): string
     {
-        return 'Buttonset';
+        return 'buttonset';
     }
 }

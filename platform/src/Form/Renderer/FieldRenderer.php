@@ -2,9 +2,19 @@
 
 namespace Platform\Form\Renderer;
 
+use Platform\Form\FieldElement;
+
 abstract class FieldRenderer extends ElementRenderer
 {
-    protected function open(): string
+    /** @var FieldElement */
+    protected $element;
+
+    public function __construct(FieldElement $element)
+    {
+        parent::__construct($element);
+    }
+
+    public function open(): string
     {
         $attribute = self::buildAttributes([
             'class' => 'field',
@@ -15,30 +25,19 @@ abstract class FieldRenderer extends ElementRenderer
 
     public function label(): string
     {
-        $label = $this->resolveLabel();
-
-        if ($label === false) {
-            return '';
-        }
-
-        $attribute = self::buildAttributes([
-            'class' => 'label',
-            'for' => $this->resolveFor(),
-        ]);
-
-        return "<label {$attribute}>{$label}</label>";
+        return $this->renderLabel('label', $this->resolveId());
     }
 
     public function info(): string
     {
-        $info = $this->element->getOption('info');
+        $info = $this->getOption('info');
 
         if (!$info) {
             return '';
         }
 
         $attribute = self::buildAttributes([
-            'class' => 'label',
+            'class' => 'info',
         ]);
 
         return "<div {$attribute}>{$info}</div>";
@@ -51,6 +50,7 @@ abstract class FieldRenderer extends ElementRenderer
         $html .= $this->open();
         $html .= $this->label();
         $html .= $this->content();
+        $html .= $this->errors();
         $html .= $this->close();
 
         return $html;
@@ -73,13 +73,45 @@ abstract class FieldRenderer extends ElementRenderer
 
     abstract public function widget(): string;
 
+    public function errors(): string
+    {
+        if (!$this->element->hasErrors()) {
+            return '';
+        }
+
+        $html = '';
+
+        $attribute = self::buildAttributes([
+            'class' => 'errors',
+        ]);
+
+        $html .= "<div {$attribute}>";
+
+        foreach ($this->element->getErrors() as $message) {
+            $html .= $this->error($message);
+        }
+
+        $html .= '</div>';
+
+        return $html;
+    }
+
     public function close(): string
     {
         return '</x-field>';
     }
 
-    private function resolveFor(): string
+    protected function resolveId(): string
     {
-        return $this->element->getOption('id') ?? $this->element->getName();
+        return $this->getOption('id') ?? $this->element->getName();
+    }
+
+    private function error(string $message): string
+    {
+        $attribute = self::buildAttributes([
+            'class' => 'item',
+        ]);
+
+        return "<div {$attribute}>{$message}</div>";
     }
 }

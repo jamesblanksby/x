@@ -10,10 +10,10 @@ class SubmitRenderer extends ElementRenderer
             'class' => 'button',
             'type' => 'submit',
             'name' => $this->element->getName(),
-            'value' => $this->element->getOption('value'),
-        ], $this->element->getOption('attributes')));
+            'value' => $this->element->getValue(),
+        ], $this->getOption('attributes')));
 
-        $label = $this->resolveLabel() ?: $this->element->getName();
+        $label = $this->resolveLabel();
 
         return "<button {$attribute}>{$label}</button>";
     }

@@ -13,27 +13,22 @@ class InputRenderer extends FieldRenderer
         ]);
 
         $html .= "<div {$attribute}>";
-        $html .= $this->element();
+        $html .= $this->input();
         $html .= '</div>';
 
         return $html;
     }
 
-    public function element(): string
+    private function input(): string
     {
         $attribute = self::buildAttributes(array_merge([
-            'type' => $this->element->getOption('type'),
+            'type' => $this->getOption('type'),
             'id' => $this->resolveId(),
             'name' => $this->element->getName(),
-            'value' => $this->element->getOption('value'),
-            'required' => $this->element->getOption('required'),
-        ], $this->element->getOption('attributes')));
+            'value' => $this->element->getValue(),
+            'required' => $this->getOption('required'),
+        ], $this->getOption('attributes')));
 
         return "<input {$attribute}>";
-    }
-
-    private function resolveId(): string
-    {
-        return $this->element->getOption('id') ?? $this->element->getName();
     }
 }

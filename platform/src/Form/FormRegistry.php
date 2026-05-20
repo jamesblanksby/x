@@ -25,12 +25,18 @@ class FormRegistry
             return $type;
         }
 
-        // @TODO validate type ?
-
         if (!$this->container->has($typeClass)) {
             throw new \InvalidArgumentException("Form type `{$typeClass}` could not be resolved.");
         }
 
-        return $this->container->get($typeClass);
+        $type = $this->container->get($typeClass);
+
+        if (!$type instanceof TypeInterface) {
+            throw new \InvalidArgumentException("Form type `{$typeClass}` must implement TypeInterface.");
+        }
+
+        $this->types[$typeClass] = $type;
+
+        return $type;
     }
 }

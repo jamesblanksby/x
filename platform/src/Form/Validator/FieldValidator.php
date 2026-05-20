@@ -2,16 +2,27 @@
 
 namespace Platform\Form\Validator;
 
+use Framework\Utility\Value;
+use Platform\Form\FieldElement;
+use Platform\Form\Form;
+
 class FieldValidator extends Validator
 {
-    public function validate(): bool
+    /** @var FieldElement */
+    protected $element;
+
+    public function __construct(Form $form, FieldElement $element)
     {
-        $value = $this->form->getValue($this->element->getName());
+        parent::__construct($form, $element);
+    }
 
-        if ($this->element->getOption('required') && empty($value)) {
-            return false;
+    public function validate(): void
+    {
+        $required = $this->element->getOption('required');
+        $value = $this->element->getValue();
+
+        if ($required && Value::blank($value)) {
+            $this->element->addError('This field is required.');
         }
-
-        return true;
     }
 }

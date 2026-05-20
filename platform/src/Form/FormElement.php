@@ -14,6 +14,8 @@ class FormElement
     private $options = [];
     /** @var array */
     private $children = [];
+    /** @var array */
+    private $errors = [];
 
     public function __construct(
         string $name,
@@ -58,6 +60,21 @@ class FormElement
         return $this->children;
     }
 
+    public function hasErrors(): bool
+    {
+        return !!$this->errors;
+    }
+
+    public function addError(string $message): void
+    {
+        $this->errors[] = $message;
+    }
+
+    public function getErrors(): array
+    {
+        return $this->errors;
+    }
+
     /** @param mixed $value */
     public function setValue($value): void
     {
@@ -72,22 +89,19 @@ class FormElement
 
     public function isValid(Form $form): bool
     {
+        $this->errors = [];
+
         $validatorClass = $this->type->getValidatorClass();
 
         if ($validatorClass !== null) {
-            $valid = (new $validatorClass($form, $this))->validate();
-
-            if (!$valid) {
-                return false;
-            }
+            $validator = new $validatorClass($form, $this);
+            $validator->validate();
         }
 
         foreach ($this->children as $child) {
-            if (!$child->isValid($form)) {
-                return false;
-            }
+            $child->isValid($form);
         }
 
-        return true;
+        return !$this->hasErrors();
     }
 }

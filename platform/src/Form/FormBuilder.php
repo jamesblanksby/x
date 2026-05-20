@@ -2,6 +2,8 @@
 
 namespace Platform\Form;
 
+use Platform\Form\Type\FieldType;
+
 class FormBuilder
 {
     /** @var FormRegistry */
@@ -27,7 +29,9 @@ class FormBuilder
             $type->build($builder);
         }
 
-        $this->children[$name] = new FormElement(
+        $elementClass = $type instanceof FieldType ? FieldElement::class : FormElement::class;
+
+        $this->children[$name] = new $elementClass(
             $name,
             $type,
             $options,

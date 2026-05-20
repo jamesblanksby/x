@@ -18,24 +18,14 @@ abstract class GroupRenderer extends ElementRenderer
     {
         $attribute = self::buildAttributes(array_merge([
             'class' => $this->groupClass(),
-        ], $this->element->getOption('attributes')));
+        ], $this->getOption('attributes')));
 
         return "<div {$attribute}>";
     }
 
     public function label(): string
     {
-        $label = $this->resolveLabel();
-
-        if ($label === false) {
-            return '';
-        }
-
-        $attribute = self::buildAttributes([
-            'class' => 'label',
-        ]);
-
-        return "<div {$attribute}>{$label}</div>";
+        return $this->renderLabel('div');
     }
 
     public function content(): string

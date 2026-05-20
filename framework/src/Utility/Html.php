@@ -1,6 +1,6 @@
 <?php
 
-namespace Platform\Utility;
+namespace Framework\Utility;
 
 class Html
 {
@@ -9,7 +9,7 @@ class Html
         $parts = [];
 
         foreach ($attributes as $key => $value) {
-            if (self::isEmpty($value)) {
+            if (self::blank($value)) {
                 continue;
             }
 
@@ -26,19 +26,6 @@ class Html
     public static function class(?string ...$classes): string
     {
         return implode(' ', array_filter($classes));
-    }
-
-    /**
-     * @param mixed $value
-     * @param mixed $compare
-     */
-    public static function equal($value, $compare, bool $strict = true): bool
-    {
-        if (is_array($compare)) {
-            return in_array($value, $compare, $strict);
-        }
-
-        return $strict ? $value === $compare : $value == $compare;
     }
 
     public static function sanitize(string $html, ?array $allowed = null, ?array $blocked = null): string
@@ -68,21 +55,13 @@ class Html
         return strip_tags($html);
     }
 
-    /**
-     * @param mixed $value
-     * @param mixed $compare
-     */
-    public static function state($value, $compare, string $state): ?string
-    {
-        return self::equal($value, $compare) ? $state : null;
-    }
 
     public static function style(array $styles): string
     {
         $parts = [];
 
         foreach ($styles as $property => $value) {
-            if (self::isEmpty($value)) {
+            if (self::blank($value)) {
                 continue;
             }
 
@@ -93,8 +72,8 @@ class Html
     }
 
     /** @param mixed $value */
-    private static function isEmpty($value): bool
+    private static function blank($value): bool
     {
-        return $value === null || $value === false;
+        return Value::blank($value) || $value === false;
     }
 }

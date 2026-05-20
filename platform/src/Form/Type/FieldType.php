@@ -9,12 +9,13 @@ abstract class FieldType extends Type
     public function setDefaults(): array
     {
         return array_merge(parent::setDefaults(), [
-            'attributes' => [],
-            'class' => 'field',
-            'id' => null,
             'info' => null,
             'label' => null,
+            'id' => null,
+            'value' => null,
             'required' => true,
+            'readonly' => false,
+            'attributes' => [],
         ]);
     }
 
